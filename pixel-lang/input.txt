@@ -1,0 +1,3 @@
+PROGRAM
+VAR variable : INT ; 
+END
