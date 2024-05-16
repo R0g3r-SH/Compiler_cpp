@@ -1,0 +1,8 @@
+PROGRAM
+VAR variable : INT ;
+variable = 9;
+VAR variable2 : INT;
+variable2 = 10;
+variable = variable + variable2;
+PRINT(variable)
+END

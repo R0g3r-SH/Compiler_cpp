@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     yyin = file;
 
     // Print file line by line
-    printf("Contenido del archivo:\n");
+    printf("\n ->> Contenido del archivo:\n\n");
     char buffer[1024];
     while (fgets(buffer, sizeof(buffer), file)) {
         printf("%s", buffer);
@@ -33,12 +33,13 @@ int main(int argc, char *argv[]) {
 
     // Reset file pointer to the beginning of the file
     fseek(file, 0, SEEK_SET);
+    printf("\n\n-->TOKENS: \n\n");
 
     // Parse the file
     if (yyparse() == 0) {
-        printf("Análisis sintáctico completado con éxito.\n");
+        printf("\n 😎 Análisis sintáctico completado con éxito 🚀.\n");
     } else {
-        printf("Error en el análisis sintáctico.\n");
+        printf("\nError en el análisis sintáctico. 💀 \n");
     }
 
     fclose(file);

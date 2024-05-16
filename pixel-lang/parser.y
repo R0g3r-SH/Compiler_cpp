@@ -17,7 +17,7 @@ int yyerror(const char* s);
 
 %%
 
-program : PROGRAM statements END { printf("Programa válido\n"); }
+program : PROGRAM ID SEMI_COLON statements END { printf("Programa válido\n"); }
         ;
 
 statements : /* empty */

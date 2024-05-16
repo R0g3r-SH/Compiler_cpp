@@ -1,0 +1,3 @@
+PROGRAM bolas
+VAR variable : INT ;
+END
