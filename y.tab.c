@@ -117,54 +117,64 @@ extern int YYPARSE_DECL();
 typedef int YYINT;
 static const YYINT yylhs[] = {                           -1,
     0,    3,    3,    4,    4,    4,    4,    4,    2,    2,
-    2,    5,    1,    1,    6,   10,   10,   10,   11,   11,
-   11,   12,   12,   12,   12,    7,    8,    8,    9,
+    2,    5,    1,    1,   10,   10,   10,   10,   10,   10,
+   12,   12,   12,   11,   11,   11,   13,   13,   13,   13,
+    6,   14,   14,   15,   15,    7,    7,    8,    8,    9,
 };
 static const YYINT yylen[] = {                            2,
     3,    0,    2,    2,    2,    2,    1,    1,    1,    1,
-    1,    4,    1,    3,    3,    1,    3,    3,    1,    3,
-    3,    1,    1,    1,    3,    4,    7,   11,    7,
+    1,    4,    1,    3,    1,    1,    1,    3,    2,    2,
+    1,    3,    3,    1,    3,    3,    1,    3,    3,    3,
+    3,    1,    3,    1,    3,    4,    4,    7,   11,    8,
 };
 static const YYINT yydefred[] = {                         0,
     2,    0,    0,    0,    0,    0,    0,    0,    1,    3,
-    0,    0,    0,    7,    8,    0,   13,    0,    0,    0,
-    0,    4,    5,    6,   22,    0,   23,   24,    0,    0,
-   19,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,   14,    9,   10,   11,   12,    0,    0,   26,   25,
-    0,    0,   20,   21,    2,    2,    0,    0,    0,   29,
-    0,    2,    0,   28,
+    0,    0,    0,    7,    8,    0,   13,    0,    0,    2,
+    0,    4,    5,    6,   15,    0,    0,    0,   16,   17,
+   21,    0,    0,    0,    0,    0,    0,    0,   32,    0,
+    0,    0,    0,   19,   20,    0,    0,    0,    0,   14,
+    9,   10,   11,   12,    0,    0,    0,    0,    0,    0,
+   37,    0,   36,   18,    0,    0,   22,   23,    0,    0,
+    0,    2,    0,   33,    0,    0,    0,    0,    0,    0,
+   40,    2,    0,   39,
 };
 #if defined(YYDESTRUCT_CALL) || defined(YYSTYPE_TOSTRING)
 static const YYINT yystos[] = {                           0,
   257,  288,  291,  258,  260,  265,  267,  284,  286,  292,
-  293,  294,  295,  296,  297,  272,  258,  289,  270,  270,
-  270,  259,  259,  259,  258,  270,  280,  281,  298,  299,
-  300,  261,  262,  298,  298,  298,  298,  276,  277,  278,
-  279,  258,  263,  264,  283,  290,  271,  271,  271,  271,
-  299,  299,  300,  300,  268,  268,  291,  291,  269,  269,
-  266,  268,  291,  269,
+  293,  294,  295,  296,  297,  272,  258,  289,  270,  268,
+  270,  259,  259,  259,  258,  270,  276,  277,  280,  281,
+  298,  299,  300,  261,  262,  299,  301,  291,  282,  299,
+  302,  303,  299,  298,  298,  276,  277,  278,  279,  258,
+  263,  264,  283,  290,  273,  274,  275,  271,  269,  261,
+  271,  261,  271,  271,  300,  300,  298,  298,  299,  299,
+  299,  268,  285,  282,  299,  291,  270,  269,  301,  266,
+  271,  268,  291,  269,
 };
 #endif /* YYDESTRUCT_CALL || YYSTYPE_TOSTRING */
 static const YYINT yydgoto[] = {                          2,
-   18,   46,    3,   10,   11,   12,   13,   14,   15,   29,
-   30,   31,
+   18,   54,    3,   10,   11,   12,   13,   14,   15,   31,
+   36,   33,   37,   41,   42,
 };
 static const YYINT yysindex[] = {                      -253,
-    0,    0, -257, -254, -226, -236, -229, -224,    0,    0,
- -201, -192, -180,    0,    0, -233,    0, -256, -233, -233,
- -233,    0,    0,    0,    0, -233,    0,    0, -223, -248,
-    0, -176, -247, -203, -200, -196, -193, -233, -233, -233,
- -233,    0,    0,    0,    0,    0, -181, -178,    0,    0,
- -248, -248,    0,    0,    0,    0, -246, -245, -175,    0,
- -174,    0, -225,    0,
+    0,    0, -241, -270, -249, -257, -230, -248,    0,    0,
+ -204, -203, -190,    0,    0, -191,    0, -246, -191,    0,
+ -205,    0,    0,    0,    0, -191, -191, -191,    0,    0,
+    0, -226, -258, -225, -256, -153, -217, -235,    0, -226,
+ -243, -187, -175,    0,    0, -191, -191, -191, -191,    0,
+    0,    0,    0,    0, -191, -191, -191, -210, -215, -209,
+    0, -191,    0,    0, -258, -258,    0,    0, -226, -226,
+ -226,    0, -178,    0, -226, -221, -191, -186, -177, -173,
+    0,    0, -201,    0,
 };
 static const YYINT yyrindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0, -167, -216,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0, -160, -168,    0,    0, -167,    0,    0,    0, -183,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
- -214, -207,    0,    0,    0,    0,    0,    0, -258,    0,
+    0,    0,    0,    0, -161, -142,    0,    0, -146, -145,
+ -144,    0,    0,    0, -174,    0,    0, -255,    0,    0,
     0,    0,    0,    0,
 };
 #if YYBTYACC
@@ -175,37 +185,47 @@ static const YYINT yycindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,
 };
 #endif
 static const YYINT yygindex[] = {                         0,
-    0,    0,   10,    0,    0,    0,    0,    0,    0,   30,
-   47,   48,
+    0,    0,  -20,    0,    0,    0,    0,    0,    0,   33,
+  -15,  -11,   34,    0,    0,
 };
-#define YYTABLESIZE 94
-static const YYINT yytable[] = {                         27,
-    4,   27,    5,    1,   32,   33,   27,    6,   27,    7,
-   27,    4,    4,    5,    5,   43,   44,   16,    6,    6,
-    7,    7,   59,   60,   25,   27,    8,   27,    9,   40,
-   41,   17,    4,   19,    5,   45,   26,    8,    8,    6,
-   20,    7,   16,   64,   17,   21,   27,   28,   34,   35,
-   36,   18,   38,   39,   16,   37,   17,   22,    8,   16,
-   16,   17,   17,   18,   57,   58,   23,   47,   18,   18,
-   48,   63,   38,   39,   49,   38,   39,   50,   24,   38,
-   39,   42,   38,   39,   51,   52,   55,   53,   54,   56,
-   61,   15,    0,   62,
+#define YYTABLESIZE 135
+static const YYINT yytable[] = {                         38,
+   32,   16,   38,    1,   38,   40,   51,   52,   17,   38,
+   43,   38,   19,   38,   34,   35,    4,   60,    5,   48,
+   49,   21,    4,    6,    5,    7,   53,   61,   38,    6,
+   38,    7,   50,   59,   65,   66,    4,   20,    5,   69,
+   70,   71,    8,    6,    9,    7,   75,   78,    8,   46,
+   47,   76,   25,   58,   22,   23,    4,   72,    5,   44,
+   45,   83,    8,    6,   26,    7,   25,   84,   24,   73,
+   27,   28,   74,   62,   29,   30,   39,   34,   26,   80,
+   67,   68,    8,   63,   27,   28,   35,   34,   29,   30,
+   24,   77,   24,   81,   82,   64,   35,   25,   31,   25,
+   46,   47,   24,   27,   24,   24,   24,   24,   24,   25,
+   79,   25,   25,   25,   25,   25,   26,    0,   26,   55,
+   56,   57,   46,   47,   28,   29,   30,    0,   26,    0,
+   26,   26,   26,   26,   26,
 };
-static const YYINT yycheck[] = {                        258,
-  258,  260,  260,  257,  261,  262,  265,  265,  267,  267,
-  269,  258,  258,  260,  260,  263,  264,  272,  265,  265,
-  267,  267,  269,  269,  258,  284,  284,  286,  286,  278,
-  279,  258,  258,  270,  260,  283,  270,  284,  284,  265,
-  270,  267,  259,  269,  259,  270,  280,  281,   19,   20,
-   21,  259,  276,  277,  271,   26,  271,  259,  284,  276,
-  277,  276,  277,  271,   55,   56,  259,  271,  276,  277,
-  271,   62,  276,  277,  271,  276,  277,  271,  259,  276,
-  277,  258,  276,  277,   38,   39,  268,   40,   41,  268,
-  266,  259,   -1,  268,
+static const YYINT yycheck[] = {                         20,
+   16,  272,  258,  257,  260,   21,  263,  264,  258,  265,
+   26,  267,  270,  269,  261,  262,  258,  261,  260,  278,
+  279,  270,  258,  265,  260,  267,  283,  271,  284,  265,
+  286,  267,  258,  269,   46,   47,  258,  268,  260,   55,
+   56,   57,  284,  265,  286,  267,   62,  269,  284,  276,
+  277,   72,  258,  271,  259,  259,  258,  268,  260,   27,
+   28,   82,  284,  265,  270,  267,  258,  269,  259,  285,
+  276,  277,  282,  261,  280,  281,  282,  261,  270,  266,
+   48,   49,  284,  271,  276,  277,  261,  271,  280,  281,
+  259,  270,  261,  271,  268,  271,  271,  259,  259,  261,
+  276,  277,  271,  271,  273,  274,  275,  276,  277,  271,
+   77,  273,  274,  275,  276,  277,  259,   -1,  261,  273,
+  274,  275,  276,  277,  271,  271,  271,   -1,  271,   -1,
+  273,  274,  275,  276,  277,
 };
 #if YYBTYACC
 static const YYINT yyctable[] = {                        -1,
@@ -218,7 +238,11 @@ static const YYINT yyctable[] = {                        -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,   -1,
 };
 #endif
 #define YYFINAL 2
@@ -226,7 +250,7 @@ static const YYINT yyctable[] = {                        -1,
 #define YYDEBUG 0
 #endif
 #define YYMAXTOKEN 286
-#define YYUNDFTOKEN 301
+#define YYUNDFTOKEN 304
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -243,7 +267,8 @@ static const char *const yyname[] = {
 "PLUS","MINUS","TIMES","DIVIDE","CTE_INT","CTE_FLOAT","CTE_STRING","VOID",
 "PRINT","DO","END","$accept","program","var_list","type","statements",
 "statement","var_declaration","assignment","print_statement","if_statement",
-"while_statement","expression","term","factor","illegal-symbol",
+"while_statement","factor","expression","term","comparison",
+"list_of_cte_strings","list_of_expressions","illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : program",
@@ -261,21 +286,32 @@ static const char *const yyrule[] = {
 "var_declaration : VAR var_list POINTS type",
 "var_list : ID",
 "var_list : var_list COMMA ID",
-"assignment : ID EQUALS expression",
-"expression : term",
-"expression : expression PLUS term",
-"expression : expression MINUS term",
-"term : factor",
-"term : term TIMES factor",
-"term : term DIVIDE factor",
 "factor : ID",
 "factor : CTE_INT",
 "factor : CTE_FLOAT",
 "factor : LEFT_PAREN expression RIGHT_PAREN",
-"print_statement : PRINT LEFT_PAREN expression RIGHT_PAREN",
-"if_statement : IF LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE",
-"if_statement : IF LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE",
-"while_statement : WHILE LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE",
+"factor : PLUS factor",
+"factor : MINUS factor",
+"term : factor",
+"term : term TIMES factor",
+"term : term DIVIDE factor",
+"expression : term",
+"expression : expression PLUS term",
+"expression : expression MINUS term",
+"comparison : expression",
+"comparison : expression GREATER_THAN expression",
+"comparison : expression LESS_THAN expression",
+"comparison : expression NOT_EQUALS expression",
+"assignment : ID EQUALS expression",
+"list_of_cte_strings : CTE_STRING",
+"list_of_cte_strings : list_of_cte_strings COMMA CTE_STRING",
+"list_of_expressions : expression",
+"list_of_expressions : list_of_expressions COMMA expression",
+"print_statement : PRINT LEFT_PAREN list_of_expressions RIGHT_PAREN",
+"print_statement : PRINT LEFT_PAREN list_of_cte_strings RIGHT_PAREN",
+"if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE",
+"if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE",
+"while_statement : WHILE LEFT_BRACE statements RIGHT_BRACE DO LEFT_PAREN comparison RIGHT_PAREN",
 
 };
 #endif
@@ -1079,22 +1115,22 @@ yyreduce:
 case 1:
 #line 29 "parser.y"
 	{ printf("Programa válido\n"); }
-#line 1083 "y.tab.c"
+#line 1119 "y.tab.c"
 break;
 case 9:
 #line 43 "parser.y"
 	{ yyval.str = strdup("INT"); }
-#line 1088 "y.tab.c"
+#line 1124 "y.tab.c"
 break;
 case 10:
 #line 44 "parser.y"
 	{ yyval.str = strdup("FLOAT"); }
-#line 1093 "y.tab.c"
+#line 1129 "y.tab.c"
 break;
 case 11:
 #line 45 "parser.y"
 	{ yyval.str = strdup("VOID"); }
-#line 1098 "y.tab.c"
+#line 1134 "y.tab.c"
 break;
 case 12:
 #line 49 "parser.y"
@@ -1116,12 +1152,12 @@ case 12:
         free(yystack.l_mark[-2].str); /* Free the allocated memory for $2*/
         free(yystack.l_mark[0].str); /* Free the allocated memory for $4*/
     }
-#line 1120 "y.tab.c"
+#line 1156 "y.tab.c"
 break;
 case 13:
 #line 70 "parser.y"
 	{ yyval.str = strdup(yystack.l_mark[0].str); }
-#line 1125 "y.tab.c"
+#line 1161 "y.tab.c"
 break;
 case 14:
 #line 71 "parser.y"
@@ -1131,9 +1167,16 @@ case 14:
         free(yystack.l_mark[-2].str); /* Free the allocated memory for $1*/
         free(yystack.l_mark[0].str); /* Free the allocated memory for $3*/
       }
-#line 1135 "y.tab.c"
+#line 1171 "y.tab.c"
 break;
-#line 1137 "y.tab.c"
+case 40:
+#line 126 "parser.y"
+	{
+     printf("While statement\n");
+}
+#line 1178 "y.tab.c"
+break;
+#line 1180 "y.tab.c"
     default:
         break;
     }

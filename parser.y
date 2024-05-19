@@ -76,33 +76,56 @@ var_list
       }
     ;
 
-assignment : ID EQUALS expression
-           ;
 
-expression : term
-           | expression PLUS term
-           | expression MINUS term
-           ;
+
+factor : ID
+       | CTE_INT
+       | CTE_FLOAT
+       | LEFT_PAREN expression RIGHT_PAREN
+       | PLUS factor
+       | MINUS factor
+       ;
 
 term : factor
      | term TIMES factor
      | term DIVIDE factor
      ;
 
-factor : ID
-       | CTE_INT
-       | CTE_FLOAT
-       | LEFT_PAREN expression RIGHT_PAREN
-       ;
+expression : term
+           | expression PLUS term
+           | expression MINUS term
+           ;
 
-print_statement : PRINT LEFT_PAREN expression RIGHT_PAREN
+comparison : expression
+           | expression GREATER_THAN expression
+           | expression LESS_THAN expression
+           | expression NOT_EQUALS expression
+           ;
+
+assignment : ID EQUALS expression
+           ;
+
+list_of_cte_strings : CTE_STRING
+                    | list_of_cte_strings COMMA CTE_STRING
+                    ;
+
+list_of_expressions : expression
+                    | list_of_expressions COMMA expression
+                    ;
+
+print_statement : PRINT LEFT_PAREN list_of_expressions RIGHT_PAREN
+                | PRINT LEFT_PAREN list_of_cte_strings RIGHT_PAREN
                 ;
 
-if_statement : IF LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE
-             | IF LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE
+if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE
+             | IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE
              ;
 
-while_statement : WHILE LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE
+
+while_statement : WHILE LEFT_BRACE statements RIGHT_BRACE DO LEFT_PAREN comparison RIGHT_PAREN 
+{
+     printf("While statement\n");
+}
                 ;
 
 %%

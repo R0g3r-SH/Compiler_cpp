@@ -368,10 +368,10 @@ static const flex_int16_t yy_accept[71] =
         0,    0,   33,   32,    1,   32,   32,   16,   17,   24,
        22,    5,   23,   25,   26,    6,    3,   20,   18,   19,
        31,   31,   31,   31,   31,   31,   31,   31,   14,   15,
-        1,   21,    0,   28,   27,   26,   31,   12,   31,   31,
+        1,   21,    0,   28,   27,   26,   31,   13,   31,   31,
        31,   10,   31,   31,   31,   31,   31,   27,   31,   30,
        31,    7,   31,   31,    4,   31,   31,   11,   31,   31,
-       31,    9,   31,    8,   29,   31,   13,   31,    2,    0
+       31,    9,   31,    8,   29,   31,   12,   31,    2,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -829,12 +829,12 @@ YY_RULE_SETUP
 case 12:
 YY_RULE_SETUP
 #line 20 "scanner.l"
-{ return DO; }
+{ return WHILE; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 21 "scanner.l"
-{ return WHILE; }
+{ return DO; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP

@@ -3,3 +3,17 @@ Análisis sintáctico completado con éxito.
 Variable: pikles, Type: FLOAT
 Variable: pikles2, Type: FLOAT
 Variable: pikles5, Type: FLOAT
+Analizando archivo: tests/Input2.txt
+Análisis sintáctico completado con éxito.
+Analizando archivo: tests/input3.txt
+Análisis sintáctico completado con éxito.
+Variable: variable, Type: INT
+Analizando archivo: tests/input4.txt
+Análisis sintáctico completado con éxito.
+Variable: pikles, Type: INT
+Variable: pikles2, Type: FLOAT
+Analizando archivo: tests/input5.txt
+Análisis sintáctico completado con éxito.
+Variable: pikles, Type: FLOAT
+Variable: pikles2, Type: FLOAT
+Variable: pikles5, Type: FLOAT

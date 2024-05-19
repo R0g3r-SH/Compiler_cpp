@@ -1,9 +1,0 @@
-PROGRAM
-
-VAR pikles , pikles2 ,pikles5 : FLOAT ;
-
-
-pikles = 9;
-
-
-END

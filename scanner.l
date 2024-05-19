@@ -17,8 +17,8 @@ VAR         { return VAR; }
 "VOID"       { yylval.str = strdup(yytext); return VOID; }
 IF          { return IF; }
 ELSE        { return ELSE; }
-DO          { return DO; }
 WHILE       { return WHILE; }
+DO          { return DO; }
 "{"         { return LEFT_BRACE; }
 "}"         { return RIGHT_BRACE; }
 "("         { return LEFT_PAREN; }
