@@ -29,7 +29,8 @@
 #define CTE_STRING 282
 #define VOID 283
 #define PRINT 284
-#define END 285
+#define DO 285
+#define END 286
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -40,6 +41,8 @@ typedef union YYSTYPE {
     char *str;
     int num;
     float fnum;
+
+   
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
 extern YYSTYPE yylval;

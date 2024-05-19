@@ -1,5 +1,12 @@
 %{
 #include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include "directory_manager.h"
+
+
 %}
 
 %{
@@ -10,10 +17,12 @@ int yyerror(const char* s);
     char *str;
     int num;
     float fnum;
+
+   
 }
 
 
-%token PROGRAM ID SEMI_COLON VAR COMMA POINTS INT FLOAT IF ELSE WHILE LEFT_BRACE RIGHT_BRACE LEFT_PAREN RIGHT_PAREN EQUALS GREATER_THAN LESS_THAN NOT_EQUALS PLUS MINUS TIMES DIVIDE CTE_INT CTE_FLOAT CTE_STRING VOID PRINT END
+%token PROGRAM ID SEMI_COLON VAR COMMA POINTS INT FLOAT IF ELSE WHILE LEFT_BRACE RIGHT_BRACE LEFT_PAREN RIGHT_PAREN EQUALS GREATER_THAN LESS_THAN NOT_EQUALS PLUS MINUS TIMES DIVIDE CTE_INT CTE_FLOAT CTE_STRING VOID PRINT DO END
 
 %%
 
@@ -31,13 +40,26 @@ statement : var_declaration SEMI_COLON
           | while_statement
           ;
 
-var_declaration : VAR ID POINTS type
-                ;
-
 type : INT
      | FLOAT
      | VOID
      ;
+
+
+var_declaration : VAR ID POINTS type {
+    printf("Variable declarada\n");
+    // Accessing the type attribute using appropriate type
+    printf("ID: %s, Type: %s\n", $2.str, $4.str);
+    printf("Variable declarada\n");
+     //add to symbol table
+     addVariableToDirectory(std::string($2.str), std::string($4.str)); 
+
+}
+
+
+
+                ;
+
 
 assignment : ID EQUALS expression
            ;

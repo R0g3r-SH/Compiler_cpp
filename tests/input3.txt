@@ -1,3 +1,4 @@
 PROGRAM
 VAR variable : INT ; 
+VAR variable : FLOAT;
 END

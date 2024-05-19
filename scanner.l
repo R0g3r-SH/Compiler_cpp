@@ -12,10 +12,12 @@ PROGRAM     { printf("Token: PROGRAM\n"); return PROGRAM; }
 VAR         { return VAR; }
 ","         { return COMMA; }
 ":"         { return POINTS; } // Match colon
-INT         { return INT; }
-FLOAT       { return FLOAT; }
+"INT"   { yylval.str = strdup(yytext); return INT; }
+"FLOAT"      { yylval.str = strdup(yytext); return FLOAT; }
+"VOID"       { yylval.str = strdup(yytext); return VOID; }
 IF          { return IF; }
 ELSE        { return ELSE; }
+DO          { return DO; }
 WHILE       { return WHILE; }
 "{"         { return LEFT_BRACE; }
 "}"         { return RIGHT_BRACE; }
@@ -32,8 +34,8 @@ WHILE       { return WHILE; }
 [0-9]+      { yylval.num = atoi(yytext); return CTE_INT; } // Match integers
 [0-9]+"."[0-9]*  { yylval.fnum = atof(yytext); return CTE_FLOAT; } // Match floating-point numbers
 \"[^\"\n]*\" { yylval.str = strdup(yytext+1); yylval.str[strlen(yylval.str)-1] = '\0'; return CTE_STRING; } // Match string literals
-VOID        { return VOID; }
 PRINT       { return PRINT; }
 END         { return END; }
-[a-zA-Z_][a-zA-Z0-9_]* { printf("Token: ID (%s)\n", yytext); return ID; } // Match identifiers
+[a-zA-Z][a-zA-Z0-9]*   { yylval.str = strdup(yytext); return ID; }
+    
 %%

@@ -1,0 +1,4 @@
+PROGRAM
+VAR pikles : INT ; 
+VAR variable : FLOAT;
+END
