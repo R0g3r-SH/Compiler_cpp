@@ -7,6 +7,19 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Create a temporary file to hold the includes
+echo "#include <iostream>" > tmp_y.tab.h
+echo "#include <string>" >> tmp_y.tab.h
+echo "#include <vector>" >> tmp_y.tab.h
+echo "#include <map>" >> tmp_y.tab.h
+echo "#include <memory>" >> tmp_y.tab.h
+
+# Append the content of generated y.tab.h to the temporary file
+cat y.tab.h >> tmp_y.tab.h
+
+# Replace y.tab.h with the temporary file
+mv tmp_y.tab.h y.tab.h
+
 # Step 2: Run Flex to generate the scanner
 flex scanner.l
 if [ $? -ne 0 ]; then

@@ -1,3 +1,8 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <memory>
 #ifndef _yy_defines_h_
 #define _yy_defines_h_
 
@@ -41,8 +46,6 @@ typedef union YYSTYPE {
     char *str;
     int num;
     float fnum;
-
-   
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
 extern YYSTYPE yylval;

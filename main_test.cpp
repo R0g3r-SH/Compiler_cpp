@@ -1,11 +1,13 @@
 #include <cstdio>
 #include <cstdlib>
-#include "y.tab.h"  
 #include <iostream>
 #include <string>
+#include <vector>
 #include <map>
 #include <fstream>
 #include <filesystem>
+
+#include "y.tab.h" 
 #include "directory_manager.h"
 
 extern FILE *yyin;

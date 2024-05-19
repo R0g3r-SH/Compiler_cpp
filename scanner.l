@@ -23,7 +23,7 @@ WHILE       { return WHILE; }
 "}"         { return RIGHT_BRACE; }
 "("         { return LEFT_PAREN; }
 ")"         { return RIGHT_PAREN; }
-"=="        { return EQUALS; } // Example of matching a double equals sign
+"="        { return EQUALS; } // Example of matching a double equals sign
 ">"         { return GREATER_THAN; }
 "<"         { return LESS_THAN; }
 "!="        { return NOT_EQUALS; } // Example of matching not equals

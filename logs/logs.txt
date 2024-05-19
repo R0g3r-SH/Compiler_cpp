@@ -1,4 +1,0 @@
-Analizando archivo: tests/input.txt
-Análisis sintáctico completado con éxito.
-Variable: pikles, Type: INT
-Variable: variable, Type: FLOAT

@@ -1,0 +1,10 @@
+PROGRAM
+
+VAR pikles : INT;
+pikles = 2;
+
+VAR pikles2 : FLOAT;
+
+pikles = pikles + pikles2;
+
+END
