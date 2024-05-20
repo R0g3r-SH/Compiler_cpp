@@ -77,7 +77,6 @@ var_list
     ;
 
 
-
 factor : ID
        | CTE_INT
        | CTE_FLOAT

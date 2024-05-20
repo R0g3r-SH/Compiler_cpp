@@ -1170,7 +1170,7 @@ case 14:
 #line 1171 "y.tab.c"
 break;
 case 40:
-#line 126 "parser.y"
+#line 125 "parser.y"
 	{
      printf("While statement\n");
 }
