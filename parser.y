@@ -5,7 +5,10 @@
 #include <sstream>
 #include <vector>
 #include <map>
+
 #include "directory_manager.h"
+#include "quadruple_manager.h"
+#include "stacks.h"
 
 int yyerror(const char* s);
 
@@ -23,6 +26,11 @@ int yyerror(const char* s);
 %token <str> ID
 %type <str> var_list
 %type <str> type
+%type <num> CTE_INT
+%type <fnum> CTE_FLOAT
+%type <str> factor
+
+
 
 %%
 
@@ -63,6 +71,7 @@ var_declaration
         }
         free($2); // Free the allocated memory for $2
         free($4); // Free the allocated memory for $4
+    
     }
     ;
 
@@ -77,10 +86,21 @@ var_list
     ;
 
 
-factor : ID
-       | CTE_INT
-       | CTE_FLOAT
-       | LEFT_PAREN expression RIGHT_PAREN
+factor : ID {
+            operands.push(getVariableAddress($1));
+            types.push(getVariableType($1));
+        }
+       | CTE_INT {
+            operands.push($1);
+            types.push("INT");
+        }
+       | CTE_FLOAT {
+            operands.push($1);
+            types.push("FLOAT");
+        }
+       | LEFT_PAREN expression RIGHT_PAREN {
+            $$ = $2;
+        }
        | PLUS factor
        | MINUS factor
        ;

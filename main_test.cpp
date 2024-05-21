@@ -6,9 +6,14 @@
 #include <map>
 #include <fstream>
 #include <filesystem>
+#include <stack> // Add this line to include the <stack> library
 
 #include "y.tab.h" 
 #include "directory_manager.h"
+#include "memory_manager.h"
+#include "quadruple_manager.h"
+#include "stacks.h"
+
 
 extern FILE *yyin;
 extern int yyparse();
@@ -32,6 +37,16 @@ void analyzeFile(const std::string& filePath, std::ofstream& logFile) {
 
     // Reset the variable directory for each file
     variableDirectory.clear();
+
+       // Reset the memory manager
+    memoryManager = MemoryManager(5001, 6001, 7001);
+    // Reset quadruple queue
+    while (!quadruples.empty()) quadruples.pop();
+    // Reset stacks
+    while (!operators.empty()) operators.pop();
+    while (!operands.empty()) operands.pop();
+    while (!types.empty()) types.pop();
+    while (!jumps.empty()) jumps.pop();
 
     // Parse the file
     if (yyparse() == 0) {
