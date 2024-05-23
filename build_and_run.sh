@@ -28,9 +28,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Step 3: Compile the program
-g++ -o tester main_test.cpp directory_manager.cpp  memory_manager.cpp quadruple_manager.cpp stacks.cpp lex.yy.c y.tab.c -lfl
-if [ $? -ne 0 ]; then
-    echo "Compilation failed"
+g++ -o tester main_test.cpp dig++ -o tester main_test.cpp directory_manager.cpp  memory_manager.cpp quadruple_manager.cpp stacks.cpp lex.yy.c y.tab.c -lfl
+ompilation failed"
     exit 1
 fi
 
