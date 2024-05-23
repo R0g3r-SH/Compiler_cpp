@@ -6,24 +6,14 @@ pikles = 9;
 
 pikles2 = 10 ;
 
-IF (pikles > pikles){
+pikles  = pikles2 + 1;
 
-    PRINT("ping");
 
-}ELSE {
-
-    PRINT("Pong");
-    
+IF (pikles > pikles2) {
+PRINT(pikles);
+}ELSE{
+PRINT(pikles2);
 }
-
-WHILE{
-
-PRINT("Pong");
-
-pikles = pikles + 1; 
-
-} DO(pikles > pikles2)
-
 
 
 

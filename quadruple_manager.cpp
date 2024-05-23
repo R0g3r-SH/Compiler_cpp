@@ -30,3 +30,27 @@ std::string generateLabel() {
     static int labelCount = 0;
     return "L" + std::to_string(labelCount++);
 }
+
+
+void generateQuadruplesForIf(const std::string& condition) {
+    std::string labelIf = generateLabel();
+    std::string labelEnd = generateLabel();
+
+    generateQuadruple("IF_FALSE", condition, "", labelIf);
+    generateQuadruple("JUMP", "", "", labelEnd); // Jump to the end of the if block if condition is false
+    generateQuadruple("LABEL", "", "", labelIf); // Start of the if block
+}
+
+void generateQuadruplesForIfElse(const std::string& condition) {
+    std::string labelIf = generateLabel();
+    std::string labelElse = generateLabel();
+    std::string labelEnd = generateLabel();
+
+    generateQuadruple("IF_FALSE", condition, "", labelIf);
+    generateQuadruple("JUMP", "", "", labelElse); // Jump to the else block if condition is false
+    generateQuadruple("LABEL", "", "", labelIf); // Start of the if block
+    generateQuadruple("JUMP", "", "", labelEnd); // Jump to the end of the if-else block
+    generateQuadruple("LABEL", "", "", labelElse); // Start of the else block
+}
+
+

@@ -178,9 +178,36 @@ expression : term {
            ;
 
 comparison : expression
-           | expression GREATER_THAN expression
-           | expression LESS_THAN expression
-           | expression NOT_EQUALS expression
+           | expression GREATER_THAN expression {
+                // Generate quadruple for GREATER_THAN comparison
+                int tempAddress = memoryManager.allocateTemp();
+                char temp[20];
+                sprintf(temp, "t%d", tempAddress);
+                generateQuadruple("GT", $1, $3, temp);
+                $$ = strdup(temp);
+                free($1);
+                free($3);
+            }
+           | expression LESS_THAN expression {
+                // Generate quadruple for LESS_THAN comparison
+                int tempAddress = memoryManager.allocateTemp();
+                char temp[20];
+                sprintf(temp, "t%d", tempAddress);
+                generateQuadruple("LT", $1, $3, temp);
+                $$ = strdup(temp);
+                free($1);
+                free($3);
+            }
+           | expression NOT_EQUALS expression {
+                // Generate quadruple for NOT_EQUALS comparison
+                int tempAddress = memoryManager.allocateTemp();
+                char temp[20];
+                sprintf(temp, "t%d", tempAddress);
+                generateQuadruple("NE", $1, $3, temp);
+                $$ = strdup(temp);
+                free($1);
+                free($3);
+            }
            ;
 
 assignment : ID EQUALS expression {
@@ -233,9 +260,10 @@ print_statement : PRINT LEFT_PAREN list_of_expressions RIGHT_PAREN {
 
 
 
-if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE
+if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE 
              | IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE
              ;
+
 
 while_statement : WHILE LEFT_BRACE statements RIGHT_BRACE DO LEFT_PAREN comparison RIGHT_PAREN 
 {

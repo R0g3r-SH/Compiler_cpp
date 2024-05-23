@@ -449,7 +449,7 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 246 "parser.y"
+#line 274 "parser.y"
 
 
 #line 456 "y.tab.c"
@@ -1305,8 +1305,50 @@ case 26:
             }
 #line 1307 "y.tab.c"
 break;
+case 28:
+#line 181 "parser.y"
+	{
+                /* Generate quadruple for GREATER_THAN comparison*/
+                int tempAddress = memoryManager.allocateTemp();
+                char temp[20];
+                sprintf(temp, "t%d", tempAddress);
+                generateQuadruple("GT", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
+                yyval.str = strdup(temp);
+                free(yystack.l_mark[-2].str);
+                free(yystack.l_mark[0].str);
+            }
+#line 1321 "y.tab.c"
+break;
+case 29:
+#line 191 "parser.y"
+	{
+                /* Generate quadruple for LESS_THAN comparison*/
+                int tempAddress = memoryManager.allocateTemp();
+                char temp[20];
+                sprintf(temp, "t%d", tempAddress);
+                generateQuadruple("LT", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
+                yyval.str = strdup(temp);
+                free(yystack.l_mark[-2].str);
+                free(yystack.l_mark[0].str);
+            }
+#line 1335 "y.tab.c"
+break;
+case 30:
+#line 201 "parser.y"
+	{
+                /* Generate quadruple for NOT_EQUALS comparison*/
+                int tempAddress = memoryManager.allocateTemp();
+                char temp[20];
+                sprintf(temp, "t%d", tempAddress);
+                generateQuadruple("NE", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
+                yyval.str = strdup(temp);
+                free(yystack.l_mark[-2].str);
+                free(yystack.l_mark[0].str);
+            }
+#line 1349 "y.tab.c"
+break;
 case 31:
-#line 186 "parser.y"
+#line 213 "parser.y"
 	{
                 /* Get the memory address for the variable being assigned*/
                 int address = memoryManager.allocateInt(yystack.l_mark[-2].str);
@@ -1316,10 +1358,10 @@ case 31:
                 generateQuadruple("ASSIGN", yystack.l_mark[0].str, "", addressStr);
                 free(yystack.l_mark[0].str);
             }
-#line 1320 "y.tab.c"
+#line 1362 "y.tab.c"
 break;
 case 36:
-#line 205 "parser.y"
+#line 232 "parser.y"
 	{
     /* Generate quadruples for each expression to be printed*/
     std::stringstream ss(yystack.l_mark[-1].str);
@@ -1333,10 +1375,10 @@ case 36:
         generateQuadruple("PRINT", expression.c_str(), "", "");
     }
 }
-#line 1337 "y.tab.c"
+#line 1379 "y.tab.c"
 break;
 case 37:
-#line 218 "parser.y"
+#line 245 "parser.y"
 	{
     /* Generate quadruples for each constant string to be printed*/
     std::stringstream ss(yystack.l_mark[-1].str);
@@ -1350,16 +1392,16 @@ case 37:
         generateQuadruple("PRINT", cte_string.c_str(), "", "");
     }
 }
-#line 1354 "y.tab.c"
+#line 1396 "y.tab.c"
 break;
 case 40:
-#line 241 "parser.y"
+#line 269 "parser.y"
 	{
      printf("While statement\n");
 }
-#line 1361 "y.tab.c"
+#line 1403 "y.tab.c"
 break;
-#line 1363 "y.tab.c"
+#line 1405 "y.tab.c"
     default:
         break;
     }

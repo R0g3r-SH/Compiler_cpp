@@ -19,5 +19,7 @@ extern std::queue<Quadruple> quadruples;
 
 void generateQuadruple(const std::string &op, const std::string &arg1, const std::string &arg2, const std::string &result);
 void printQuadruples(std::ofstream &logFile);
+void generateQuadruplesForIf(const std::string& condition);
+void generateQuadruplesForIfElse(const std::string& condition);
 
 #endif // QUADRUPLE_MANAGER_H
