@@ -1,13 +1,7 @@
-#ifndef STACKS_H
-#define STACKS_H
-
-#include <stack>
-#include <string>
+#include "stacks.h"
 
 // Define the necessary stacks
-extern std::stack<std::string> operators;
-extern std::stack<int> operands;
-extern std::stack<std::string> types;
-extern std::stack<int> jumps;
-
-#endif // STACKS_H
+std::stack<std::string> operators;
+std::stack<int> operands;
+std::stack<std::string> types;
+std::stack<int> jumps;

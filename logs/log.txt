@@ -1,4 +1,5 @@
 Analizando archivo: tests/input.txt
 Análisis sintáctico completado con éxito.
-Variable: pickles, Type: FLOAT
-Variable: pickles2, Type: FLOAT
+Variable: pikles, Type: FLOAT
+Variable: pikles2, Type: FLOAT
+Variable: pikles5, Type: FLOAT

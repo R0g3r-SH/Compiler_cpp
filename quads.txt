@@ -1,0 +1,7 @@
+(ASSIGN, 9, , 6001)
+(ASSIGN, 10, , 6002)
+(PRINT, ping, , )
+(PRINT, Pong, , )
+(PRINT, Pong, , )
+(ADD, 6001, 1, t7001)
+(ASSIGN, t7001, , 6001)

@@ -4,7 +4,7 @@
 #include <stack>
 #include <string>
 
-// Define the necessary stacks
+// Declare the necessary stacks as extern
 extern std::stack<std::string> operators;
 extern std::stack<int> operands;
 extern std::stack<std::string> types;

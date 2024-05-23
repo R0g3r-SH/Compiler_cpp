@@ -12,6 +12,9 @@ struct Quadruple {
     std::string result;
 };
 
+// Function to generate unique label
+std::string generateLabel();
+
 extern std::queue<Quadruple> quadruples;
 
 void generateQuadruple(const std::string &op, const std::string &arg1, const std::string &arg2, const std::string &result);

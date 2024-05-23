@@ -1,15 +1,30 @@
 PROGRAM
 
-VAR pickles , pickles2  : FLOAT ;
-
-pickles2 = 4; 
+VAR pikles , pikles2 ,pikles5 : FLOAT ;
 
 pikles = 9;
 
-pickles = pickles + pickles2;
+pikles2 = 10 ;
+
+IF (pikles > pikles){
+
+    PRINT("ping");
+
+}ELSE {
+
+    PRINT("Pong");
+    
+}
+
+WHILE{
+
+PRINT("Pong");
+
+pikles = pikles + 1; 
+
+} DO(pikles > pikles2)
 
 
-PRINT(pickles);
 
 
 END
