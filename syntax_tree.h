@@ -4,14 +4,17 @@
 #include <string>
 #include <vector>
 
-// Define the Node structure
-struct Node {
+class Node {
+public:
     std::string type;
     std::string value;
     std::vector<Node*> children;
+    bool quadruplesGenerated = false;
+    bool isIfElse; // Flag to indicate if it's an IF-ELSE statement
 
-    Node(const std::string& type, const std::string& value) : type(type), value(value) {}
+    Node(std::string type, std::string value) : type(type), value(value), isIfElse(false) {} // Constructor
 };
+
 
 // Function to print the syntax tree recursively
 void printSyntaxTree(const Node* root);

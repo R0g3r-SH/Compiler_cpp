@@ -1,5 +1,0 @@
-Cuádruplos generados: 
-(=, 9, , pikles)
-(=, 10, , pikles2)
-(+, pikles2, pikles, T0)
-(=, T0, , pikles)

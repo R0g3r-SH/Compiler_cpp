@@ -13,6 +13,7 @@ struct Quadruple {
     std::string arg2;
     std::string result;
 
+
 };
 
 
@@ -20,11 +21,15 @@ extern std::vector<Quadruple> quadruples;
 
 std::string getNextTemporary();
 
+std::string getNextLabel(); 
+
 void addQuadruple(const std::string &op, const std::string &arg1, const std::string &arg2, const std::string &result);
 
 void printQuadruples(std::ofstream &logFile);
 
 void clearQuadruples();
+
+
 
 
 

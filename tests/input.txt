@@ -7,8 +7,20 @@ pikles = 9;
 pikles2 = 10 ;
 
 
-pikles = pikles2 + pikles;
+pikles = pikles2 + 3;
 
 
+IF(pikles >2){
+PRINT(pikles);
+}ELSE{
+    PRINT(takataka,elbolas);
+}
 
+DO{
+PRINT(pikles2);
+pikles2 = pikles2 + 1;
+}WHILE(pikles2<3)
+
+
+PRINT(finaldelprograma);
 END

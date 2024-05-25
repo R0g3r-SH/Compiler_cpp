@@ -244,16 +244,18 @@ if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_
                   $$ = new Node("if_statement", "if");
                   $$->children.push_back($3);
                   $$->children.push_back($6);
+                  $$->isIfElse = false; // Set isIfElse flag to false
               }
              | IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE {
                  $$ = new Node("if_statement", "if_else");
                  $$->children.push_back($3);
                  $$->children.push_back($6);
                  $$->children.push_back($10);
+                $$->isIfElse = true; // Set isIfElse flag to true
               }
               ;
 
-while_statement : WHILE LEFT_BRACE statements RIGHT_BRACE DO LEFT_PAREN comparison RIGHT_PAREN {
+while_statement : DO LEFT_BRACE statements RIGHT_BRACE WHILE LEFT_PAREN comparison RIGHT_PAREN {
                      $$ = new Node("while_statement", "while");
                      $$->children.push_back($3); // statements
                      $$->children.push_back($7); // comparison
