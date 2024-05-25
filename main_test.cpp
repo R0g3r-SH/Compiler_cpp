@@ -14,6 +14,8 @@
 #include "memory_manager.h"
 #include "quadruple_manager.h"
 #include "stacks.h"
+#include "syntax_tree.h" 
+
 
 extern FILE *yyin;
 extern int yyparse();
@@ -39,9 +41,7 @@ void analyzeFile(const std::string& filePath, std::ofstream& logFile) {
     variableDirectory.clear();
 
     // Reset the quadruples queue
-    while (!quadruples.empty()) {
-        quadruples.pop();
-    }
+    clearQuadruples();
 
     // Parse the file
     if (yyparse() == 0) {
@@ -52,6 +52,7 @@ void analyzeFile(const std::string& filePath, std::ofstream& logFile) {
 
     // Print variable directory
     printVariableDirectory(logFile);
+
 
     printQuadruples(logFile);
 

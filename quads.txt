@@ -1,7 +1,5 @@
-(ASSIGN, 9, , 6001)
-(ASSIGN, 10, , 6002)
-(ADD, 6002, 1, t7001)
-(ASSIGN, t7001, , 6001)
-(GT, 6001, 6002, t7002)
-(PRINT, 6001, , )
-(PRINT, 6002, , )
+Cuádruplos generados: 
+(=, 9, , pikles)
+(=, 10, , pikles2)
+(+, pikles2, pikles, T0)
+(=, T0, , pikles)

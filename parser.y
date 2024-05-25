@@ -1,5 +1,6 @@
 %{
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -10,11 +11,15 @@
 #include "memory_manager.h"
 #include "quadruple_manager.h"
 #include "stacks.h"
+#include "syntax_tree.h"
 
 int yyerror(const char* s);
 
 extern MemoryManager memoryManager;
 int tempCounter = 0;
+
+
+Node* rootNode = nullptr;
 
 %}
 
@@ -22,6 +27,7 @@ int tempCounter = 0;
     char *str;
     int num;
     float fnum;
+    Node* node; 
 }
 
 %token PROGRAM ID SEMI_COLON VAR COMMA POINTS INT FLOAT IF ELSE WHILE LEFT_BRACE RIGHT_BRACE LEFT_PAREN RIGHT_PAREN EQUALS GREATER_THAN LESS_THAN NOT_EQUALS PLUS MINUS TIMES DIVIDE CTE_INT CTE_FLOAT CTE_STRING VOID PRINT DO END
@@ -29,247 +35,251 @@ int tempCounter = 0;
 %token <str> ID
 %token <num> CTE_INT
 %token <fnum> CTE_FLOAT
-%token <str> CTE_STRING
+%token <str> CTE_STRING 
+%token <str> RIGHT_BRACE
+%token <str> LEFT_BRACE
+%token <str> LEFT_PAREN
+%token <str> RIGHT_PAREN
 
-%type <str> var_list
-%type <str> type
-%type <str> factor
-%type <str> term
-%type <str> expression
-%type <str> comparison
-%type <str> assignment
-%type <str> list_of_expressions
-%type <str> list_of_cte_strings
+%type <node> program
+%type <node> statements
+%type <node> statement
+%type <node> var_declaration
+%type <node> assignment
+%type <node> print_statement
+%type <node> if_statement
+%type <node> while_statement
+%type <node> type
+%type <node> var_list
+%type <node> factor
+%type <node> term
+%type <node> expression
+%type <node> comparison
+%type <node> list_of_expressions
+%type <node> list_of_cte_strings
 
 %%
 
-program : PROGRAM statements END { printf("Programa válido\n"); }
+program : PROGRAM statements END { 
+
+    $$ = new Node("program", "program");
+    $$->children.push_back($2); // Add statements as a child of the program node
+    rootNode = $$; // Save the root node
+    printf("Program parsed !!! \n");
+
+    printf("Syntax tree: \n");
+    
+    printSyntaxTree(rootNode); // Print the syntax tree 
+    generateQuadruples(rootNode);
+
+ }
         ;
 
-statements : /* empty */
-           | statements statement
+statements : /* empty */ {
+    // Construct an empty statements node
+    $$ = new Node("statements", "");
+}
+           | statements statement {
+               // Append the statement node to the statements node
+               $$ = $1;
+               $$->children.push_back($2);
+           }
            ;
 
-statement : var_declaration SEMI_COLON
-          | assignment SEMI_COLON
-          | print_statement SEMI_COLON
-          | if_statement
-          | while_statement
+statement : var_declaration SEMI_COLON {
+    // Construct the var_declaration node
+    $$ = $1;
+}
+          | assignment SEMI_COLON {
+              // Construct the assignment node
+              $$ = $1;
+          }
+          | print_statement SEMI_COLON {
+              // Construct the print_statement node
+              $$ = $1;
+          }
+          | if_statement {
+              // Construct the if_statement node
+              $$ = $1;
+          }
+          | while_statement {
+              // Construct the while_statement node
+              $$ = $1;
+          }
           ;
-
-type : INT { $$ = strdup("INT"); }
-     | FLOAT { $$ = strdup("FLOAT"); }
-     | VOID { $$ = strdup("VOID"); }
-     ;
 
 var_declaration
     : VAR var_list POINTS type {
-        printf("Variable(s) declared\n");
-        // Split the variable list by commas
-        std::stringstream ss($2);
-        std::string var;
-        while (std::getline(ss, var, ',')) {
-            // Trim whitespace (if needed)
-            var.erase(0, var.find_first_not_of(' ')); 
-            var.erase(var.find_last_not_of(' ') + 1);
-
-            printf("ID: %s, Type: %s\n", var.c_str(), $4);
-            // Add to symbol table
-            addVariableToDirectory(var, $4);
-
-            // Allocate memory for the variable
-            if (strcmp($4, "INT") == 0) {
-                memoryManager.allocateInt(var);
-            } else if (strcmp($4, "FLOAT") == 0) {
-                memoryManager.allocateFloat(var);
-            }
-        }
-        free($2); // Free the allocated memory for $2
-        free($4); // Free the allocated memory for $4
+        // Construct the var_declaration node
+        $$ = new Node("var_declaration", "");
+        $$->children.push_back($2); // Add var_list as a child of var_declaration
+        $$->children.push_back($4); // Add type as a child of var_declaration
     }
     ;
 
 var_list
-    : ID { $$ = strdup($1); }
-    | var_list COMMA ID { 
-        std::string result = std::string($1) + ", " + $3;
-        $$ = strdup(result.c_str());
-        free($1); // Free the allocated memory for $1
-        free($3); // Free the allocated memory for $3
-      }
+    : ID {
+        // Construct the var_list node with ID value
+        $$ = new Node("var_list", $1);
+    }
+    | var_list COMMA ID {
+        // Extend the var_list node with another ID
+        $$ = $1;
+        $$->children.push_back(new Node("var_list", $3));
+    }
     ;
 
 factor : ID {
-            // Get the memory address of the variable
-            int address = memoryManager.allocateInt($1);
-            char buffer[20];
-            sprintf(buffer, "%d", address);
-            $$ = strdup(buffer);
+            // Construct the factor node with ID value
+            $$ = new Node("factor", $1);
         }
        | CTE_INT {
-            char buffer[20];
-            sprintf(buffer, "%d", $1);
-            $$ = strdup(buffer);
+            // Construct the factor node with CTE_INT value
+            std::stringstream ss;
+            ss << $1;
+            $$ = new Node("factor", ss.str());
         }
        | CTE_FLOAT {
-            char buffer[20];
-            sprintf(buffer, "%f", $1);
-            $$ = strdup(buffer);
+            // Construct the factor node with CTE_FLOAT value
+            std::stringstream ss;
+            ss << $1;
+            $$ = new Node("factor", ss.str());
         }
        | LEFT_PAREN expression RIGHT_PAREN {
+            // Construct the factor node with expression value
             $$ = $2;
         }
        | PLUS factor {
+            // Construct the factor node with PLUS factor value
             $$ = $2;
         }
        | MINUS factor {
+            // Construct the factor node with MINUS factor value
             $$ = $2;
         }
        ;
+
+
+       type : INT {
+    $$ = new Node("type", "INT");
+}
+     | FLOAT {
+         $$ = new Node("type", "FLOAT");
+     }
+     | VOID {
+         $$ = new Node("type", "VOID");
+     }
+     ;
 
 term : factor {
             $$ = $1;
         }
      | term TIMES factor {
-            // Generate quadruple for multiplication
-            int tempAddress = memoryManager.allocateTemp();
-            char temp[20];
-            sprintf(temp, "t%d", tempAddress);
-            generateQuadruple("MUL", $1, $3, temp);
-            $$ = strdup(temp);
-            free($1);
-            free($3);
-        }
+         $$ = new Node("term", "*");
+         $$->children.push_back($1);
+         $$->children.push_back($3);
+     }
      | term DIVIDE factor {
-            // Generate quadruple for division
-            int tempAddress = memoryManager.allocateTemp();
-            char temp[20];
-            sprintf(temp, "t%d", tempAddress);
-            generateQuadruple("DIV", $1, $3, temp);
-            $$ = strdup(temp);
-            free($1);
-            free($3);
-        }
+         $$ = new Node("term", "/");
+         $$->children.push_back($1);
+         $$->children.push_back($3);
+     }
      ;
 
 expression : term {
                 $$ = $1;
             }
            | expression PLUS term {
-                // Generate quadruple for addition
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("ADD", $1, $3, temp);
-                $$ = strdup(temp);
-                free($1);
-                free($3);
-            }
+               $$ = new Node("expression", "+");
+               $$->children.push_back($1);
+               $$->children.push_back($3);
+           }
            | expression MINUS term {
-                // Generate quadruple for subtraction
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("SUB", $1, $3, temp);
-                $$ = strdup(temp);
-                free($1);
-                free($3);
-            }
+               $$ = new Node("expression", "-");
+               $$->children.push_back($3);
+           }
            ;
 
 comparison : expression
            | expression GREATER_THAN expression {
-                // Generate quadruple for GREATER_THAN comparison
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("GT", $1, $3, temp);
-                $$ = strdup(temp);
-                free($1);
-                free($3);
-            }
+               $$ = new Node("comparison", ">");
+               $$->children.push_back($1);
+               $$->children.push_back($3);
+           }
            | expression LESS_THAN expression {
-                // Generate quadruple for LESS_THAN comparison
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("LT", $1, $3, temp);
-                $$ = strdup(temp);
-                free($1);
-                free($3);
-            }
+               $$ = new Node("comparison", "<");
+               $$->children.push_back($1);
+               $$->children.push_back($3);
+           }
            | expression NOT_EQUALS expression {
-                // Generate quadruple for NOT_EQUALS comparison
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("NE", $1, $3, temp);
-                $$ = strdup(temp);
-                free($1);
-                free($3);
-            }
+               $$ = new Node("comparison", "!=");
+               $$->children.push_back($1);
+               $$->children.push_back($3);
+           }
            ;
+
 
 assignment : ID EQUALS expression {
-                // Get the memory address for the variable being assigned
-                int address = memoryManager.allocateInt($1);
-                char addressStr[20];
-                sprintf(addressStr, "%d", address);
-                // Generate quadruple for assignment
-                generateQuadruple("ASSIGN", $3, "", addressStr);
-                free($3);
+               $$ = new Node("assignment", "=");
+               $$->children.push_back(new Node("ID", $1));
+               $$->children.push_back($3);
             }
            ;
 
-list_of_cte_strings : CTE_STRING
-                    | list_of_cte_strings COMMA CTE_STRING
-                    ;
-
-list_of_expressions : expression
-                    | list_of_expressions COMMA expression
-                    ;
-
 print_statement : PRINT LEFT_PAREN list_of_expressions RIGHT_PAREN {
-    // Generate quadruples for each expression to be printed
-    std::stringstream ss($3);
-    std::string expression;
-    while (std::getline(ss, expression, ',')) {
-        // Trim whitespace (if needed)
-        expression.erase(0, expression.find_first_not_of(' ')); 
-        expression.erase(expression.find_last_not_of(' ') + 1);
-
-        // Generate quadruple for printing the expression
-        generateQuadruple("PRINT", expression.c_str(), "", "");
-    }
-}
+                    $$ = new Node("print_statement", "print");
+                    for (auto& child : $3->children) {
+                        $$->children.push_back(child);
+                    }
+                 }
                 | PRINT LEFT_PAREN list_of_cte_strings RIGHT_PAREN {
-    // Generate quadruples for each constant string to be printed
-    std::stringstream ss($3);
-    std::string cte_string;
-    while (std::getline(ss, cte_string, ',')) {
-        // Trim whitespace (if needed)
-        cte_string.erase(0, cte_string.find_first_not_of(' ')); 
-        cte_string.erase(cte_string.find_last_not_of(' ') + 1);
-
-        // Generate quadruple for printing the constant string
-        generateQuadruple("PRINT", cte_string.c_str(), "", "");
-    }
-}
+                    $$ = new Node("print_statement", "print");
+                    for (auto& child : $3->children) {
+                        $$->children.push_back(child);
+                    }
+                }
                 ;
 
+if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE {
+                  $$ = new Node("if_statement", "if");
+                  $$->children.push_back($3);
+                  $$->children.push_back($6);
+              }
+             | IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE {
+                 $$ = new Node("if_statement", "if_else");
+                 $$->children.push_back($3);
+                 $$->children.push_back($6);
+                 $$->children.push_back($10);
+              }
+              ;
+
+while_statement : WHILE LEFT_BRACE statements RIGHT_BRACE DO LEFT_PAREN comparison RIGHT_PAREN {
+                     $$ = new Node("while_statement", "while");
+                     $$->children.push_back($3); // statements
+                     $$->children.push_back($7); // comparison
+                 }
+                 ;
 
 
+list_of_cte_strings : CTE_STRING {
+                        $$ = new Node("list_of_cte_strings", $1);
+                     }
+                    | list_of_cte_strings COMMA CTE_STRING {
+                        $$ = $1;
+                        $$->children.push_back(new Node("CTE_STRING", $3));
+                     }
+                     ;
 
-if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE 
-             | IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE
-             ;
-
-
-while_statement : WHILE LEFT_BRACE statements RIGHT_BRACE DO LEFT_PAREN comparison RIGHT_PAREN 
-{
-     printf("While statement\n");
-}
-                ;
+list_of_expressions : expression {
+                        $$ = new Node("list_of_expressions", "");
+                        $$->children.push_back($1);
+                     }
+                    | list_of_expressions COMMA expression {
+                        $$ = $1;
+                        $$->children.push_back($3);
+                     }
+                     ;
 
 %%
+
 

@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include "syntax_tree.h"
 #ifndef _yy_defines_h_
 #define _yy_defines_h_
 
@@ -46,6 +47,7 @@ typedef union YYSTYPE {
     char *str;
     int num;
     float fnum;
+    Node* node; 
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
 extern YYSTYPE yylval;

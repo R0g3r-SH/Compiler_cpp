@@ -13,6 +13,7 @@ echo "#include <string>" >> tmp_y.tab.h
 echo "#include <vector>" >> tmp_y.tab.h
 echo "#include <map>" >> tmp_y.tab.h
 echo "#include <memory>" >> tmp_y.tab.h
+echo '#include "syntax_tree.h"' >> tmp_y.tab.h
 
 # Append the content of generated y.tab.h to the temporary file
 cat y.tab.h >> tmp_y.tab.h
@@ -28,7 +29,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Step 3: Compile the program
-g++ -o tester main_test.cpp directory_manager.cpp memory_manager.cpp quadruple_manager.cpp stacks.cpp lex.yy.c y.tab.c -lfl
+g++ -o tester main_test.cpp syntax_tree.cpp directory_manager.cpp memory_manager.cpp quadruple_manager.cpp stacks.cpp lex.yy.c y.tab.c -lfl
 if [ $? -ne 0 ]; then
     echo "Compilation failed"
     exit 1

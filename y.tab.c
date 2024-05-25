@@ -22,7 +22,8 @@
 
 #line 1 "parser.y"
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -33,11 +34,15 @@
 #include "memory_manager.h"
 #include "quadruple_manager.h"
 #include "stacks.h"
+#include "syntax_tree.h"
 
 int yyerror(const char* s);
 
 extern MemoryManager memoryManager;
 int tempCounter = 0;
+
+
+Node* rootNode = nullptr;
 
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
@@ -45,14 +50,15 @@ int tempCounter = 0;
 #endif
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
-#line 21 "parser.y"
+#line 26 "parser.y"
 typedef union YYSTYPE {
     char *str;
     int num;
     float fnum;
+    Node* node; 
 } YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 56 "y.tab.c"
+#line 62 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -122,48 +128,48 @@ extern int YYPARSE_DECL();
 #define YYERRCODE 256
 typedef int YYINT;
 static const YYINT yylhs[] = {                           -1,
-    0,   10,   10,   11,   11,   11,   11,   11,    2,    2,
-    2,   12,    1,    1,    3,    3,    3,    3,    3,    3,
-    4,    4,    4,    5,    5,    5,    6,    6,    6,    6,
-    7,    9,    9,    8,    8,   13,   13,   14,   14,   15,
+    0,    1,    1,    2,    2,    2,    2,    2,    3,    9,
+    9,   10,   10,   10,   10,   10,   10,    8,    8,    8,
+   11,   11,   11,   12,   12,   12,   13,   13,   13,   13,
+    4,    5,    5,    6,    6,    7,   15,   15,   14,   14,
 };
 static const YYINT yylen[] = {                            2,
-    3,    0,    2,    2,    2,    2,    1,    1,    1,    1,
-    1,    4,    1,    3,    1,    1,    1,    3,    2,    2,
+    3,    0,    2,    2,    2,    2,    1,    1,    4,    1,
+    3,    1,    1,    1,    3,    2,    2,    1,    1,    1,
     1,    3,    3,    1,    3,    3,    1,    3,    3,    3,
-    3,    1,    3,    1,    3,    4,    4,    7,   11,    8,
+    3,    4,    4,    7,   11,    8,    1,    3,    1,    3,
 };
 static const YYINT yydefred[] = {                         0,
-    2,    0,    0,    0,    0,    0,    0,    0,    1,    0,
-    3,    0,    0,    7,    8,    0,   13,    0,    0,    2,
-    0,    5,    4,    6,   15,    0,    0,    0,   16,   17,
-   21,    0,    0,    0,    0,    0,    0,    0,   32,    0,
-    0,    0,    0,   19,   20,    0,    0,    0,    0,   14,
-    9,   10,   11,   12,    0,    0,    0,    0,    0,    0,
-   36,    0,   37,   18,   22,   23,    0,    0,    0,    0,
-    0,    2,    0,    0,   33,    0,    0,    0,    0,    0,
-   40,    2,    0,   39,
+    2,    0,    0,    0,    0,    0,    0,    0,    1,    3,
+    0,    0,    0,    7,    8,    0,   10,    0,    0,    2,
+    0,    4,    5,    6,   12,    0,    0,    0,   13,   14,
+   21,    0,    0,    0,    0,    0,    0,    0,   37,    0,
+    0,    0,    0,   16,   17,    0,    0,    0,    0,   11,
+   18,   19,   20,    9,    0,    0,    0,    0,    0,    0,
+   32,    0,   33,   15,   22,   23,    0,    0,    0,    0,
+    0,    2,    0,    0,   38,    0,    0,    0,    0,    0,
+   36,    2,    0,   35,
 };
 #if defined(YYDESTRUCT_CALL) || defined(YYSTYPE_TOSTRING)
 static const YYINT yystos[] = {                           0,
-  257,  288,  298,  258,  260,  265,  267,  284,  286,  295,
-  299,  300,  301,  302,  303,  272,  258,  289,  270,  268,
+  257,  288,  289,  258,  260,  265,  267,  284,  286,  290,
+  291,  292,  293,  294,  295,  272,  258,  297,  270,  268,
   270,  259,  259,  259,  258,  270,  276,  277,  280,  281,
-  291,  292,  293,  261,  262,  293,  294,  298,  282,  293,
-  296,  297,  293,  291,  291,  278,  279,  276,  277,  258,
-  263,  264,  283,  290,  273,  274,  275,  271,  269,  261,
-  271,  261,  271,  271,  291,  291,  292,  292,  293,  293,
-  293,  268,  285,  293,  282,  298,  270,  269,  294,  266,
-  271,  268,  298,  269,
+  298,  299,  300,  261,  262,  300,  301,  289,  282,  300,
+  302,  303,  300,  298,  298,  278,  279,  276,  277,  258,
+  263,  264,  283,  296,  273,  274,  275,  271,  269,  261,
+  271,  261,  271,  271,  298,  298,  299,  299,  300,  300,
+  300,  268,  285,  300,  282,  289,  270,  269,  301,  266,
+  271,  268,  289,  269,
 };
 #endif /* YYDESTRUCT_CALL || YYSTYPE_TOSTRING */
 static const YYINT yydgoto[] = {                          2,
-   18,   54,   31,   32,   36,   37,   10,   41,   42,    3,
-   11,   12,   13,   14,   15,
+    3,   10,   11,   12,   13,   14,   15,   54,   18,   31,
+   32,   36,   37,   41,   42,
 };
 static const YYINT yysindex[] = {                      -253,
-    0,    0, -240, -263, -237, -219, -235, -201,    0, -229,
-    0, -189, -177,    0,    0, -192,    0, -225, -192,    0,
+    0,    0, -240, -263, -237, -219, -235, -201,    0,    0,
+ -229, -189, -177,    0,    0, -192,    0, -225, -192,    0,
  -205,    0,    0,    0,    0, -192, -192, -192,    0,    0,
     0, -215, -238, -175, -203, -156, -185, -241,    0, -238,
  -248, -239, -269,    0,    0, -192, -192, -192, -192,    0,
@@ -197,23 +203,23 @@ static const YYINT yycindex[] = {                         0,
 };
 #endif
 static const YYINT yygindex[] = {                         0,
-    0,    0,  -12,   19,  -15,   52,    0,    0,    0,  -20,
-    0,    0,    0,    0,    0,
+  -20,    0,    0,    0,    0,    0,    0,    0,    0,  -12,
+   19,  -15,   52,    0,    0,
 };
 #define YYTABLESIZE 133
 static const YYINT yytable[] = {                         38,
-   33,   64,   38,    1,   38,   40,   48,   49,   16,   38,
-   43,   38,   60,   38,   44,   45,    4,    4,    5,    5,
-   17,   62,   61,    6,    6,    7,    7,   59,   38,   22,
-   38,   63,   20,   65,   66,   34,   35,   48,   49,   69,
+   33,   64,   34,    1,   34,   40,   48,   49,   16,   34,
+   43,   34,   60,   34,   44,   45,    4,    4,    5,    5,
+   17,   62,   61,    6,    6,    7,    7,   59,   34,   22,
+   34,   63,   20,   65,   66,   34,   35,   48,   49,   69,
    70,   71,    8,    8,   74,    9,    4,    4,    5,    5,
    19,   76,   25,    6,    6,    7,    7,   78,   84,   51,
    52,   83,   46,   47,   26,   25,   67,   68,   21,   23,
    27,   28,    8,    8,   29,   30,   39,   26,   24,   53,
    24,   24,   50,   27,   28,   58,   72,   29,   30,   25,
-   24,   25,   24,   24,   24,   24,   24,   26,   34,   26,
-   35,   25,   73,   25,   25,   25,   25,   25,   34,   26,
-   35,   26,   26,   26,   26,   26,   55,   56,   57,   48,
+   24,   25,   24,   24,   24,   24,   24,   26,   39,   26,
+   40,   25,   73,   25,   25,   25,   25,   25,   39,   26,
+   40,   26,   26,   26,   26,   26,   55,   56,   57,   48,
    49,   77,   75,   80,   81,   31,   82,   27,   79,    0,
    28,   29,   30,
 };
@@ -271,10 +277,10 @@ static const char *const yyname[] = {
 "COMMA","POINTS","INT","FLOAT","IF","ELSE","WHILE","LEFT_BRACE","RIGHT_BRACE",
 "LEFT_PAREN","RIGHT_PAREN","EQUALS","GREATER_THAN","LESS_THAN","NOT_EQUALS",
 "PLUS","MINUS","TIMES","DIVIDE","CTE_INT","CTE_FLOAT","CTE_STRING","VOID",
-"PRINT","DO","END","$accept","program","var_list","type","factor","term",
-"expression","comparison","assignment","list_of_expressions",
-"list_of_cte_strings","statements","statement","var_declaration",
-"print_statement","if_statement","while_statement","illegal-symbol",
+"PRINT","DO","END","$accept","program","statements","statement",
+"var_declaration","assignment","print_statement","if_statement",
+"while_statement","type","var_list","factor","term","expression","comparison",
+"list_of_expressions","list_of_cte_strings","illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : program",
@@ -286,9 +292,6 @@ static const char *const yyrule[] = {
 "statement : print_statement SEMI_COLON",
 "statement : if_statement",
 "statement : while_statement",
-"type : INT",
-"type : FLOAT",
-"type : VOID",
 "var_declaration : VAR var_list POINTS type",
 "var_list : ID",
 "var_list : var_list COMMA ID",
@@ -298,6 +301,9 @@ static const char *const yyrule[] = {
 "factor : LEFT_PAREN expression RIGHT_PAREN",
 "factor : PLUS factor",
 "factor : MINUS factor",
+"type : INT",
+"type : FLOAT",
+"type : VOID",
 "term : factor",
 "term : term TIMES factor",
 "term : term DIVIDE factor",
@@ -309,15 +315,15 @@ static const char *const yyrule[] = {
 "comparison : expression LESS_THAN expression",
 "comparison : expression NOT_EQUALS expression",
 "assignment : ID EQUALS expression",
-"list_of_cte_strings : CTE_STRING",
-"list_of_cte_strings : list_of_cte_strings COMMA CTE_STRING",
-"list_of_expressions : expression",
-"list_of_expressions : list_of_expressions COMMA expression",
 "print_statement : PRINT LEFT_PAREN list_of_expressions RIGHT_PAREN",
 "print_statement : PRINT LEFT_PAREN list_of_cte_strings RIGHT_PAREN",
 "if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE",
 "if_statement : IF LEFT_PAREN comparison RIGHT_PAREN LEFT_BRACE statements RIGHT_BRACE ELSE LEFT_BRACE statements RIGHT_BRACE",
 "while_statement : WHILE LEFT_BRACE statements RIGHT_BRACE DO LEFT_PAREN comparison RIGHT_PAREN",
+"list_of_cte_strings : CTE_STRING",
+"list_of_cte_strings : list_of_cte_strings COMMA CTE_STRING",
+"list_of_expressions : expression",
+"list_of_expressions : list_of_expressions COMMA expression",
 
 };
 #endif
@@ -449,10 +455,11 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 274 "parser.y"
+#line 283 "parser.y"
 
 
-#line 456 "y.tab.c"
+
+#line 463 "y.tab.c"
 
 /* For use in generated program */
 #define yydepth (int)(yystack.s_mark - yystack.s_base)
@@ -1123,285 +1130,344 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 46 "parser.y"
-	{ printf("Programa válido\n"); }
-#line 1129 "y.tab.c"
+#line 63 "parser.y"
+	{ 
+
+    yyval.node = new Node("program", "program");
+    yyval.node->children.push_back(yystack.l_mark[-1].node); /* Add statements as a child of the program node*/
+    rootNode = yyval.node; /* Save the root node*/
+    printf("Program parsed !!! \n");
+
+    printf("Syntax tree: \n");
+    
+    printSyntaxTree(rootNode); /* Print the syntax tree */
+    generateQuadruples(rootNode);
+
+ }
+#line 1148 "y.tab.c"
+break;
+case 2:
+#line 78 "parser.y"
+	{
+    /* Construct an empty statements node*/
+    yyval.node = new Node("statements", "");
+}
+#line 1156 "y.tab.c"
+break;
+case 3:
+#line 82 "parser.y"
+	{
+               /* Append the statement node to the statements node*/
+               yyval.node = yystack.l_mark[-1].node;
+               yyval.node->children.push_back(yystack.l_mark[0].node);
+           }
+#line 1165 "y.tab.c"
+break;
+case 4:
+#line 89 "parser.y"
+	{
+    /* Construct the var_declaration node*/
+    yyval.node = yystack.l_mark[-1].node;
+}
+#line 1173 "y.tab.c"
+break;
+case 5:
+#line 93 "parser.y"
+	{
+              /* Construct the assignment node*/
+              yyval.node = yystack.l_mark[-1].node;
+          }
+#line 1181 "y.tab.c"
+break;
+case 6:
+#line 97 "parser.y"
+	{
+              /* Construct the print_statement node*/
+              yyval.node = yystack.l_mark[-1].node;
+          }
+#line 1189 "y.tab.c"
+break;
+case 7:
+#line 101 "parser.y"
+	{
+              /* Construct the if_statement node*/
+              yyval.node = yystack.l_mark[0].node;
+          }
+#line 1197 "y.tab.c"
+break;
+case 8:
+#line 105 "parser.y"
+	{
+              /* Construct the while_statement node*/
+              yyval.node = yystack.l_mark[0].node;
+          }
+#line 1205 "y.tab.c"
 break;
 case 9:
-#line 60 "parser.y"
-	{ yyval.str = strdup("INT"); }
-#line 1134 "y.tab.c"
+#line 112 "parser.y"
+	{
+        /* Construct the var_declaration node*/
+        yyval.node = new Node("var_declaration", "");
+        yyval.node->children.push_back(yystack.l_mark[-2].node); /* Add var_list as a child of var_declaration*/
+        yyval.node->children.push_back(yystack.l_mark[0].node); /* Add type as a child of var_declaration*/
+    }
+#line 1215 "y.tab.c"
 break;
 case 10:
-#line 61 "parser.y"
-	{ yyval.str = strdup("FLOAT"); }
-#line 1139 "y.tab.c"
-break;
-case 11:
-#line 62 "parser.y"
-	{ yyval.str = strdup("VOID"); }
-#line 1144 "y.tab.c"
-break;
-case 12:
-#line 66 "parser.y"
+#line 121 "parser.y"
 	{
-        printf("Variable(s) declared\n");
-        /* Split the variable list by commas*/
-        std::stringstream ss(yystack.l_mark[-2].str);
-        std::string var;
-        while (std::getline(ss, var, ',')) {
-            /* Trim whitespace (if needed)*/
-            var.erase(0, var.find_first_not_of(' ')); 
-            var.erase(var.find_last_not_of(' ') + 1);
-
-            printf("ID: %s, Type: %s\n", var.c_str(), yystack.l_mark[0].str);
-            /* Add to symbol table*/
-            addVariableToDirectory(var, yystack.l_mark[0].str);
-
-            /* Allocate memory for the variable*/
-            if (strcmp(yystack.l_mark[0].str, "INT") == 0) {
-                memoryManager.allocateInt(var);
-            } else if (strcmp(yystack.l_mark[0].str, "FLOAT") == 0) {
-                memoryManager.allocateFloat(var);
-            }
-        }
-        free(yystack.l_mark[-2].str); /* Free the allocated memory for $2*/
-        free(yystack.l_mark[0].str); /* Free the allocated memory for $4*/
+        /* Construct the var_list node with ID value*/
+        yyval.node = new Node("var_list", yystack.l_mark[0].str);
     }
-#line 1172 "y.tab.c"
-break;
-case 13:
-#line 93 "parser.y"
-	{ yyval.str = strdup(yystack.l_mark[0].str); }
-#line 1177 "y.tab.c"
-break;
-case 14:
-#line 94 "parser.y"
-	{ 
-        std::string result = std::string(yystack.l_mark[-2].str) + ", " + yystack.l_mark[0].str;
-        yyval.str = strdup(result.c_str());
-        free(yystack.l_mark[-2].str); /* Free the allocated memory for $1*/
-        free(yystack.l_mark[0].str); /* Free the allocated memory for $3*/
-      }
-#line 1187 "y.tab.c"
-break;
-case 15:
-#line 102 "parser.y"
-	{
-            /* Get the memory address of the variable*/
-            int address = memoryManager.allocateInt(yystack.l_mark[0].str);
-            char buffer[20];
-            sprintf(buffer, "%d", address);
-            yyval.str = strdup(buffer);
-        }
-#line 1198 "y.tab.c"
-break;
-case 16:
-#line 109 "parser.y"
-	{
-            char buffer[20];
-            sprintf(buffer, "%d", yystack.l_mark[0].num);
-            yyval.str = strdup(buffer);
-        }
-#line 1207 "y.tab.c"
-break;
-case 17:
-#line 114 "parser.y"
-	{
-            char buffer[20];
-            sprintf(buffer, "%f", yystack.l_mark[0].fnum);
-            yyval.str = strdup(buffer);
-        }
-#line 1216 "y.tab.c"
-break;
-case 18:
-#line 119 "parser.y"
-	{
-            yyval.str = yystack.l_mark[-1].str;
-        }
 #line 1223 "y.tab.c"
 break;
-case 19:
-#line 122 "parser.y"
-	{
-            yyval.str = yystack.l_mark[0].str;
-        }
-#line 1230 "y.tab.c"
-break;
-case 20:
+case 11:
 #line 125 "parser.y"
 	{
-            yyval.str = yystack.l_mark[0].str;
+        /* Extend the var_list node with another ID*/
+        yyval.node = yystack.l_mark[-2].node;
+        yyval.node->children.push_back(new Node("var_list", yystack.l_mark[0].str));
+    }
+#line 1232 "y.tab.c"
+break;
+case 12:
+#line 132 "parser.y"
+	{
+            /* Construct the factor node with ID value*/
+            yyval.node = new Node("factor", yystack.l_mark[0].str);
         }
-#line 1237 "y.tab.c"
+#line 1240 "y.tab.c"
+break;
+case 13:
+#line 136 "parser.y"
+	{
+            /* Construct the factor node with CTE_INT value*/
+            std::stringstream ss;
+            ss << yystack.l_mark[0].num;
+            yyval.node = new Node("factor", ss.str());
+        }
+#line 1250 "y.tab.c"
+break;
+case 14:
+#line 142 "parser.y"
+	{
+            /* Construct the factor node with CTE_FLOAT value*/
+            std::stringstream ss;
+            ss << yystack.l_mark[0].fnum;
+            yyval.node = new Node("factor", ss.str());
+        }
+#line 1260 "y.tab.c"
+break;
+case 15:
+#line 148 "parser.y"
+	{
+            /* Construct the factor node with expression value*/
+            yyval.node = yystack.l_mark[-1].node;
+        }
+#line 1268 "y.tab.c"
+break;
+case 16:
+#line 152 "parser.y"
+	{
+            /* Construct the factor node with PLUS factor value*/
+            yyval.node = yystack.l_mark[0].node;
+        }
+#line 1276 "y.tab.c"
+break;
+case 17:
+#line 156 "parser.y"
+	{
+            /* Construct the factor node with MINUS factor value*/
+            yyval.node = yystack.l_mark[0].node;
+        }
+#line 1284 "y.tab.c"
+break;
+case 18:
+#line 163 "parser.y"
+	{
+    yyval.node = new Node("type", "INT");
+}
+#line 1291 "y.tab.c"
+break;
+case 19:
+#line 166 "parser.y"
+	{
+         yyval.node = new Node("type", "FLOAT");
+     }
+#line 1298 "y.tab.c"
+break;
+case 20:
+#line 169 "parser.y"
+	{
+         yyval.node = new Node("type", "VOID");
+     }
+#line 1305 "y.tab.c"
 break;
 case 21:
-#line 130 "parser.y"
+#line 174 "parser.y"
 	{
-            yyval.str = yystack.l_mark[0].str;
+            yyval.node = yystack.l_mark[0].node;
         }
-#line 1244 "y.tab.c"
+#line 1312 "y.tab.c"
 break;
 case 22:
-#line 133 "parser.y"
+#line 177 "parser.y"
 	{
-            /* Generate quadruple for multiplication*/
-            int tempAddress = memoryManager.allocateTemp();
-            char temp[20];
-            sprintf(temp, "t%d", tempAddress);
-            generateQuadruple("MUL", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
-            yyval.str = strdup(temp);
-            free(yystack.l_mark[-2].str);
-            free(yystack.l_mark[0].str);
-        }
-#line 1258 "y.tab.c"
-break;
-case 23:
-#line 143 "parser.y"
-	{
-            /* Generate quadruple for division*/
-            int tempAddress = memoryManager.allocateTemp();
-            char temp[20];
-            sprintf(temp, "t%d", tempAddress);
-            generateQuadruple("DIV", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
-            yyval.str = strdup(temp);
-            free(yystack.l_mark[-2].str);
-            free(yystack.l_mark[0].str);
-        }
-#line 1272 "y.tab.c"
-break;
-case 24:
-#line 155 "parser.y"
-	{
-                yyval.str = yystack.l_mark[0].str;
-            }
-#line 1279 "y.tab.c"
-break;
-case 25:
-#line 158 "parser.y"
-	{
-                /* Generate quadruple for addition*/
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("ADD", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
-                yyval.str = strdup(temp);
-                free(yystack.l_mark[-2].str);
-                free(yystack.l_mark[0].str);
-            }
-#line 1293 "y.tab.c"
-break;
-case 26:
-#line 168 "parser.y"
-	{
-                /* Generate quadruple for subtraction*/
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("SUB", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
-                yyval.str = strdup(temp);
-                free(yystack.l_mark[-2].str);
-                free(yystack.l_mark[0].str);
-            }
-#line 1307 "y.tab.c"
-break;
-case 28:
-#line 181 "parser.y"
-	{
-                /* Generate quadruple for GREATER_THAN comparison*/
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("GT", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
-                yyval.str = strdup(temp);
-                free(yystack.l_mark[-2].str);
-                free(yystack.l_mark[0].str);
-            }
+         yyval.node = new Node("term", "*");
+         yyval.node->children.push_back(yystack.l_mark[-2].node);
+         yyval.node->children.push_back(yystack.l_mark[0].node);
+     }
 #line 1321 "y.tab.c"
 break;
-case 29:
-#line 191 "parser.y"
+case 23:
+#line 182 "parser.y"
 	{
-                /* Generate quadruple for LESS_THAN comparison*/
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("LT", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
-                yyval.str = strdup(temp);
-                free(yystack.l_mark[-2].str);
-                free(yystack.l_mark[0].str);
+         yyval.node = new Node("term", "/");
+         yyval.node->children.push_back(yystack.l_mark[-2].node);
+         yyval.node->children.push_back(yystack.l_mark[0].node);
+     }
+#line 1330 "y.tab.c"
+break;
+case 24:
+#line 189 "parser.y"
+	{
+                yyval.node = yystack.l_mark[0].node;
             }
-#line 1335 "y.tab.c"
+#line 1337 "y.tab.c"
+break;
+case 25:
+#line 192 "parser.y"
+	{
+               yyval.node = new Node("expression", "+");
+               yyval.node->children.push_back(yystack.l_mark[-2].node);
+               yyval.node->children.push_back(yystack.l_mark[0].node);
+           }
+#line 1346 "y.tab.c"
+break;
+case 26:
+#line 197 "parser.y"
+	{
+               yyval.node = new Node("expression", "-");
+               yyval.node->children.push_back(yystack.l_mark[0].node);
+           }
+#line 1354 "y.tab.c"
+break;
+case 28:
+#line 204 "parser.y"
+	{
+               yyval.node = new Node("comparison", ">");
+               yyval.node->children.push_back(yystack.l_mark[-2].node);
+               yyval.node->children.push_back(yystack.l_mark[0].node);
+           }
+#line 1363 "y.tab.c"
+break;
+case 29:
+#line 209 "parser.y"
+	{
+               yyval.node = new Node("comparison", "<");
+               yyval.node->children.push_back(yystack.l_mark[-2].node);
+               yyval.node->children.push_back(yystack.l_mark[0].node);
+           }
+#line 1372 "y.tab.c"
 break;
 case 30:
-#line 201 "parser.y"
+#line 214 "parser.y"
 	{
-                /* Generate quadruple for NOT_EQUALS comparison*/
-                int tempAddress = memoryManager.allocateTemp();
-                char temp[20];
-                sprintf(temp, "t%d", tempAddress);
-                generateQuadruple("NE", yystack.l_mark[-2].str, yystack.l_mark[0].str, temp);
-                yyval.str = strdup(temp);
-                free(yystack.l_mark[-2].str);
-                free(yystack.l_mark[0].str);
-            }
-#line 1349 "y.tab.c"
+               yyval.node = new Node("comparison", "!=");
+               yyval.node->children.push_back(yystack.l_mark[-2].node);
+               yyval.node->children.push_back(yystack.l_mark[0].node);
+           }
+#line 1381 "y.tab.c"
 break;
 case 31:
-#line 213 "parser.y"
+#line 222 "parser.y"
 	{
-                /* Get the memory address for the variable being assigned*/
-                int address = memoryManager.allocateInt(yystack.l_mark[-2].str);
-                char addressStr[20];
-                sprintf(addressStr, "%d", address);
-                /* Generate quadruple for assignment*/
-                generateQuadruple("ASSIGN", yystack.l_mark[0].str, "", addressStr);
-                free(yystack.l_mark[0].str);
+               yyval.node = new Node("assignment", "=");
+               yyval.node->children.push_back(new Node("ID", yystack.l_mark[-2].str));
+               yyval.node->children.push_back(yystack.l_mark[0].node);
             }
-#line 1362 "y.tab.c"
+#line 1390 "y.tab.c"
+break;
+case 32:
+#line 229 "parser.y"
+	{
+                    yyval.node = new Node("print_statement", "print");
+                    for (auto& child : yystack.l_mark[-1].node->children) {
+                        yyval.node->children.push_back(child);
+                    }
+                 }
+#line 1400 "y.tab.c"
+break;
+case 33:
+#line 235 "parser.y"
+	{
+                    yyval.node = new Node("print_statement", "print");
+                    for (auto& child : yystack.l_mark[-1].node->children) {
+                        yyval.node->children.push_back(child);
+                    }
+                }
+#line 1410 "y.tab.c"
+break;
+case 34:
+#line 243 "parser.y"
+	{
+                  yyval.node = new Node("if_statement", "if");
+                  yyval.node->children.push_back(yystack.l_mark[-4].node);
+                  yyval.node->children.push_back(yystack.l_mark[-1].node);
+              }
+#line 1419 "y.tab.c"
+break;
+case 35:
+#line 248 "parser.y"
+	{
+                 yyval.node = new Node("if_statement", "if_else");
+                 yyval.node->children.push_back(yystack.l_mark[-8].node);
+                 yyval.node->children.push_back(yystack.l_mark[-5].node);
+                 yyval.node->children.push_back(yystack.l_mark[-1].node);
+              }
+#line 1429 "y.tab.c"
 break;
 case 36:
-#line 232 "parser.y"
+#line 256 "parser.y"
 	{
-    /* Generate quadruples for each expression to be printed*/
-    std::stringstream ss(yystack.l_mark[-1].str);
-    std::string expression;
-    while (std::getline(ss, expression, ',')) {
-        /* Trim whitespace (if needed)*/
-        expression.erase(0, expression.find_first_not_of(' ')); 
-        expression.erase(expression.find_last_not_of(' ') + 1);
-
-        /* Generate quadruple for printing the expression*/
-        generateQuadruple("PRINT", expression.c_str(), "", "");
-    }
-}
-#line 1379 "y.tab.c"
+                     yyval.node = new Node("while_statement", "while");
+                     yyval.node->children.push_back(yystack.l_mark[-5].node); /* statements*/
+                     yyval.node->children.push_back(yystack.l_mark[-1].node); /* comparison*/
+                 }
+#line 1438 "y.tab.c"
 break;
 case 37:
-#line 245 "parser.y"
+#line 264 "parser.y"
 	{
-    /* Generate quadruples for each constant string to be printed*/
-    std::stringstream ss(yystack.l_mark[-1].str);
-    std::string cte_string;
-    while (std::getline(ss, cte_string, ',')) {
-        /* Trim whitespace (if needed)*/
-        cte_string.erase(0, cte_string.find_first_not_of(' ')); 
-        cte_string.erase(cte_string.find_last_not_of(' ') + 1);
-
-        /* Generate quadruple for printing the constant string*/
-        generateQuadruple("PRINT", cte_string.c_str(), "", "");
-    }
-}
-#line 1396 "y.tab.c"
+                        yyval.node = new Node("list_of_cte_strings", yystack.l_mark[0].str);
+                     }
+#line 1445 "y.tab.c"
+break;
+case 38:
+#line 267 "parser.y"
+	{
+                        yyval.node = yystack.l_mark[-2].node;
+                        yyval.node->children.push_back(new Node("CTE_STRING", yystack.l_mark[0].str));
+                     }
+#line 1453 "y.tab.c"
+break;
+case 39:
+#line 273 "parser.y"
+	{
+                        yyval.node = new Node("list_of_expressions", "");
+                        yyval.node->children.push_back(yystack.l_mark[0].node);
+                     }
+#line 1461 "y.tab.c"
 break;
 case 40:
-#line 269 "parser.y"
+#line 277 "parser.y"
 	{
-     printf("While statement\n");
-}
-#line 1403 "y.tab.c"
+                        yyval.node = yystack.l_mark[-2].node;
+                        yyval.node->children.push_back(yystack.l_mark[0].node);
+                     }
+#line 1469 "y.tab.c"
 break;
-#line 1405 "y.tab.c"
+#line 1471 "y.tab.c"
     default:
         break;
     }
