@@ -1,0 +1,13 @@
+PROGRAM
+
+
+VAR pickles2 , pickles3: FLOAT ;
+
+VAR pickles4 : INT ;
+
+
+pickles2 = 20.0; 
+
+pickles4 = 3;
+
+END

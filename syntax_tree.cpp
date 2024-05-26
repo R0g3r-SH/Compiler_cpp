@@ -1,5 +1,7 @@
 #include "syntax_tree.h"
 #include "quadruple_manager.h"
+#include "directory_manager.h"
+#include "semantic_cube.h"
 #include <iostream>
 
 void printSyntaxTree(const Node *root)
@@ -15,6 +17,56 @@ void printSyntaxTree(const Node *root)
     }
 }
 
+std::string getType(Node *node)
+{
+    if (node == nullptr)
+    {
+        return "unknown";
+    }
+
+    if (node->type == "factor")
+    {
+        if (!node->numeric_type.empty())
+        {
+            if (node->numeric_type == "ID")
+            {
+                if (!isVariableDefined(node->value))
+                {
+                    std::cerr << "Error: Variable '" << node->value << "' no declarada\n";
+                    exit(1);
+                }
+                return symbolTable[node->value].type;
+            }
+            else
+            {
+                return node->numeric_type;
+            }
+        }
+    }
+    else if (node->type == "expression" || node->type == "term")
+    {
+        if (node->children.size() < 2)
+        {
+            return "unknown";
+        }
+        std::string leftType = getType(node->children[0]);
+        std::string rightType = getType(node->children[1]);
+
+        if ((leftType == "FLOAT" && rightType == "FLOAT") || 
+            (leftType == "INT" && rightType == "FLOAT") || 
+            (leftType == "FLOAT" && rightType == "INT"))
+        {
+            return "FLOAT";
+        }
+        else
+        {
+            return "INT";
+        }
+    }
+
+    return "unknown";
+}
+
 void generateQuadruples(Node *node)
 {
     if (node == nullptr)
@@ -24,6 +76,23 @@ void generateQuadruples(Node *node)
 
     if (node->type == "assignment" && !node->quadruplesGenerated)
     {
+
+        if (!isVariableDefined(node->children[0]->value))
+        {
+            std::cerr << "Error: Variable '" << node->children[0]->value << "' no declarada\n";
+            exit(1);
+        }
+
+        std::string varType = symbolTable[node->children[0]->value].type;
+        std::string exprType = getType(node->children[1]);
+
+        std::cout << "varType: " << varType << " exprType: " << exprType << std::endl;
+
+        if (varType != exprType)
+        {
+            std::cerr << "Error: Tipos incompatibles en la asignación a '" << node->children[0]->value << "'\n";
+            exit(1);
+        }
 
         node->quadruplesGenerated = true; // Set the flag to indicate quadruples are generated for this node
         // For assignment nodes, generate quadruples for the expression on the right-hand side
@@ -42,11 +111,25 @@ void generateQuadruples(Node *node)
         generateQuadruples(node->children[0]);
         generateQuadruples(node->children[1]);
 
-        // Generate quadruple for the operation
+        if (!isVariableDefined(node->children[0]->value))
+        {
+            exit(1);
+        }
+        if (!isVariableDefined(node->children[1]->value))
+        {
+            exit(1);
+        }
+
         std::string op = node->value;
         std::string result = getNextTemporary();
         std::string leftOperand = node->children[0]->value;
         std::string rightOperand = node->children[1]->value;
+
+        std::string leftType = getType(node->children[0]);
+        std::string rightType = getType(node->children[1]);
+        std::string resultType = getResultType(leftType, rightType, op);
+
+        // Generate quadruple for the operation
 
         if (op == "+")
         {
@@ -184,7 +267,7 @@ void generateQuadruples(Node *node)
         // Generate a label for the end of the while loop
         addQuadruple("LABEL", "", "", labelEnd);
     }
-  
+
     for (Node *child : node->children)
     {
         generateQuadruples(child);

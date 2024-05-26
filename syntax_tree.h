@@ -9,10 +9,12 @@ public:
     std::string type;
     std::string value;
     std::vector<Node*> children;
+    std::string numeric_type; 
     bool quadruplesGenerated = false;
     bool isIfElse; // Flag to indicate if it's an IF-ELSE statement
 
-    Node(std::string type, std::string value) : type(type), value(value), isIfElse(false) {} // Constructor
+     Node(std::string type, std::string value, std::string numeric_type = "") 
+        : type(type), value(value), numeric_type(numeric_type), isIfElse(false) {} // Constructor
 };
 
 

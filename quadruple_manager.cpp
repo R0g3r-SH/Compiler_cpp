@@ -33,7 +33,6 @@ void printQuadruples(std::ofstream &logFile) {
 
     
     std::ofstream quadFile(QUADS_FILE);
-    quadFile << "Cuádruplos generados: " << std::endl;
     if (!quadFile) {
         std::cout << "No quads file :( " << std::endl;
         return;

@@ -2,8 +2,8 @@
 
 // semantic_cube.h
 
-#ifndef SEMANTIC_CUBE_H
-#define SEMANTIC_CUBE_H
+#ifndef DIRECTORY_MANAGER_H
+#define DIRECTORY_MANAGER_H
 
 #include <iostream>
 #include <string>
@@ -17,7 +17,8 @@
 
 struct VariableInfo {
     std::string type;
-    // Other relevant fields...
+    std::string name;
+    int scope;
 };
 
 struct FunctionInfo {
@@ -25,12 +26,14 @@ struct FunctionInfo {
     // Other relevant fields...
 };
 
-extern std::map<std::string, VariableInfo> variableDirectory;
+extern std::map<std::string, VariableInfo> symbolTable;
 extern std::map<std::string, FunctionInfo> functionDirectory;
 
-void addVariableToDirectory(const std::string& name, const std::string& type);
+void addVariableToDirectory(const std::string& name, const std::string& type , int scope);
+bool isVariableDefined(const std::string& name);
 void addFunctionToDirectory(const std::string& name, const std::string& returnType);
 void printVariableDirectory(std::ofstream& file);
 
-#endif // SEMANTIC_CUBE_H
+
+#endif 
 

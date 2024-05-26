@@ -2,9 +2,11 @@ PROGRAM
 
 VAR pikles , pikles2 ,pikles5 : FLOAT ;
 
+VAR pikles : FLOAT ;
+
 pikles = 9;
 
-VAR pikles : INT;
+VAR pikles : FLOAT;
 
 pikles2 = 10 ;
 

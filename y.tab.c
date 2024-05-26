@@ -455,7 +455,7 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 285 "parser.y"
+#line 307 "parser.y"
 
 
 
@@ -1206,220 +1206,243 @@ break;
 case 9:
 #line 112 "parser.y"
 	{
-        /* Construct the var_declaration node*/
         yyval.node = new Node("var_declaration", "");
         yyval.node->children.push_back(yystack.l_mark[-2].node); /* Add var_list as a child of var_declaration*/
         yyval.node->children.push_back(yystack.l_mark[0].node); /* Add type as a child of var_declaration*/
+
+        /* Obtener la lista de variables y el tipo*/
+        Node* varListNode = yystack.l_mark[-2].node;
+        std::string varType = yystack.l_mark[0].node->value;
+
+        /* Iterar sobre la lista de variables y agregar cada una a la tabla de símbolos*/
+        for (Node* varNode : varListNode->children) {
+            std::string varName = varNode->value;
+            std::string varType = yystack.l_mark[0].node->value;
+
+            /* Agregar la variable a la tabla de símbolos*/
+            addVariableToDirectory(varName, varType , 0);
+        }
     }
-#line 1215 "y.tab.c"
+#line 1227 "y.tab.c"
 break;
 case 10:
-#line 121 "parser.y"
+#line 133 "parser.y"
 	{
-        /* Construct the var_list node with ID value*/
-        yyval.node = new Node("var_list", yystack.l_mark[0].str);
+        yyval.node = new Node("var_list", "");
+        yyval.node->children.push_back(new Node("ID", yystack.l_mark[0].str));
     }
-#line 1223 "y.tab.c"
+#line 1235 "y.tab.c"
 break;
 case 11:
-#line 125 "parser.y"
+#line 137 "parser.y"
 	{
-        /* Extend the var_list node with another ID*/
         yyval.node = yystack.l_mark[-2].node;
-        yyval.node->children.push_back(new Node("var_list", yystack.l_mark[0].str));
+        yyval.node->children.push_back(new Node("ID", yystack.l_mark[0].str));
     }
-#line 1232 "y.tab.c"
+#line 1243 "y.tab.c"
 break;
 case 12:
-#line 132 "parser.y"
+#line 143 "parser.y"
 	{
             /* Construct the factor node with ID value*/
-            yyval.node = new Node("factor", yystack.l_mark[0].str);
+        if (!isVariableDefined(yystack.l_mark[0].str)) {
+            yyerror(("Variable '" + std::string(yystack.l_mark[0].str) + "' no declarada").c_str());
+            exit(1);
         }
-#line 1240 "y.tab.c"
+        yyval.node = new Node("factor", yystack.l_mark[0].str , "ID"); /* Agregar el tipo de la variable al nodo "factor"*/
+        }
+#line 1255 "y.tab.c"
 break;
 case 13:
-#line 136 "parser.y"
+#line 151 "parser.y"
 	{
             /* Construct the factor node with CTE_INT value*/
             std::stringstream ss;
             ss << yystack.l_mark[0].num;
-            yyval.node = new Node("factor", ss.str());
+            yyval.node = new Node("factor", ss.str() , "INT"); /* Agregar el tipo "INT" al nodo "factor*/
+         
+        
         }
-#line 1250 "y.tab.c"
+#line 1267 "y.tab.c"
 break;
 case 14:
-#line 142 "parser.y"
+#line 159 "parser.y"
 	{
             /* Construct the factor node with CTE_FLOAT value*/
             std::stringstream ss;
             ss << yystack.l_mark[0].fnum;
-            yyval.node = new Node("factor", ss.str());
+            yyval.node = new Node("factor", ss.str(), "FLOAT"); /* Agregar el tipo "FLOAT" al nodo "factor*/
+         
         }
-#line 1260 "y.tab.c"
+#line 1278 "y.tab.c"
 break;
 case 15:
-#line 148 "parser.y"
+#line 166 "parser.y"
 	{
             /* Construct the factor node with expression value*/
             yyval.node = yystack.l_mark[-1].node;
         }
-#line 1268 "y.tab.c"
+#line 1286 "y.tab.c"
 break;
 case 16:
-#line 152 "parser.y"
+#line 170 "parser.y"
 	{
             /* Construct the factor node with PLUS factor value*/
             yyval.node = yystack.l_mark[0].node;
         }
-#line 1276 "y.tab.c"
+#line 1294 "y.tab.c"
 break;
 case 17:
-#line 156 "parser.y"
+#line 174 "parser.y"
 	{
             /* Construct the factor node with MINUS factor value*/
             yyval.node = yystack.l_mark[0].node;
         }
-#line 1284 "y.tab.c"
+#line 1302 "y.tab.c"
 break;
 case 18:
-#line 163 "parser.y"
+#line 180 "parser.y"
 	{
     yyval.node = new Node("type", "INT");
 }
-#line 1291 "y.tab.c"
+#line 1309 "y.tab.c"
 break;
 case 19:
-#line 166 "parser.y"
+#line 183 "parser.y"
 	{
          yyval.node = new Node("type", "FLOAT");
      }
-#line 1298 "y.tab.c"
+#line 1316 "y.tab.c"
 break;
 case 20:
-#line 169 "parser.y"
+#line 186 "parser.y"
 	{
          yyval.node = new Node("type", "VOID");
      }
-#line 1305 "y.tab.c"
+#line 1323 "y.tab.c"
 break;
 case 21:
-#line 174 "parser.y"
+#line 191 "parser.y"
 	{
             yyval.node = yystack.l_mark[0].node;
         }
-#line 1312 "y.tab.c"
+#line 1330 "y.tab.c"
 break;
 case 22:
-#line 177 "parser.y"
+#line 194 "parser.y"
 	{
          yyval.node = new Node("term", "*");
          yyval.node->children.push_back(yystack.l_mark[-2].node);
          yyval.node->children.push_back(yystack.l_mark[0].node);
      }
-#line 1321 "y.tab.c"
+#line 1339 "y.tab.c"
 break;
 case 23:
-#line 182 "parser.y"
+#line 199 "parser.y"
 	{
          yyval.node = new Node("term", "/");
          yyval.node->children.push_back(yystack.l_mark[-2].node);
          yyval.node->children.push_back(yystack.l_mark[0].node);
      }
-#line 1330 "y.tab.c"
+#line 1348 "y.tab.c"
 break;
 case 24:
-#line 189 "parser.y"
+#line 206 "parser.y"
 	{
                 yyval.node = yystack.l_mark[0].node;
             }
-#line 1337 "y.tab.c"
+#line 1355 "y.tab.c"
 break;
 case 25:
-#line 192 "parser.y"
+#line 209 "parser.y"
 	{
                yyval.node = new Node("expression", "+");
                yyval.node->children.push_back(yystack.l_mark[-2].node);
                yyval.node->children.push_back(yystack.l_mark[0].node);
            }
-#line 1346 "y.tab.c"
+#line 1364 "y.tab.c"
 break;
 case 26:
-#line 197 "parser.y"
+#line 214 "parser.y"
 	{
                yyval.node = new Node("expression", "-");
                yyval.node->children.push_back(yystack.l_mark[0].node);
            }
-#line 1354 "y.tab.c"
+#line 1372 "y.tab.c"
 break;
 case 28:
-#line 204 "parser.y"
+#line 221 "parser.y"
 	{
                yyval.node = new Node("comparison", ">");
                yyval.node->children.push_back(yystack.l_mark[-2].node);
                yyval.node->children.push_back(yystack.l_mark[0].node);
            }
-#line 1363 "y.tab.c"
+#line 1381 "y.tab.c"
 break;
 case 29:
-#line 209 "parser.y"
+#line 226 "parser.y"
 	{
                yyval.node = new Node("comparison", "<");
                yyval.node->children.push_back(yystack.l_mark[-2].node);
                yyval.node->children.push_back(yystack.l_mark[0].node);
            }
-#line 1372 "y.tab.c"
+#line 1390 "y.tab.c"
 break;
 case 30:
-#line 214 "parser.y"
+#line 231 "parser.y"
 	{
                yyval.node = new Node("comparison", "!=");
                yyval.node->children.push_back(yystack.l_mark[-2].node);
                yyval.node->children.push_back(yystack.l_mark[0].node);
            }
-#line 1381 "y.tab.c"
+#line 1399 "y.tab.c"
 break;
 case 31:
-#line 222 "parser.y"
+#line 239 "parser.y"
 	{
-               yyval.node = new Node("assignment", "=");
-               yyval.node->children.push_back(new Node("ID", yystack.l_mark[-2].str));
-               yyval.node->children.push_back(yystack.l_mark[0].node);
+             if (!isVariableDefined(yystack.l_mark[-2].str)) {
+                yyerror(("Error: Variable '" + std::string(yystack.l_mark[-2].str) + "' no declarada").c_str());
+                exit(1);
+                }
+                
+                yyval.node = new Node("assignment", "=");
+                yyval.node->children.push_back(new Node("ID", yystack.l_mark[-2].str));
+                yyval.node->children.push_back(yystack.l_mark[0].node);
             }
-#line 1390 "y.tab.c"
+#line 1413 "y.tab.c"
 break;
 case 32:
-#line 229 "parser.y"
+#line 251 "parser.y"
 	{
                     yyval.node = new Node("print_statement", "print");
                     for (auto& child : yystack.l_mark[-1].node->children) {
                         yyval.node->children.push_back(child);
                     }
                  }
-#line 1400 "y.tab.c"
+#line 1423 "y.tab.c"
 break;
 case 33:
-#line 235 "parser.y"
+#line 257 "parser.y"
 	{
                     yyval.node = new Node("print_statement", "print");
                     for (auto& child : yystack.l_mark[-1].node->children) {
                         yyval.node->children.push_back(child);
                     }
                 }
-#line 1410 "y.tab.c"
+#line 1433 "y.tab.c"
 break;
 case 34:
-#line 243 "parser.y"
+#line 265 "parser.y"
 	{
                   yyval.node = new Node("if_statement", "if");
                   yyval.node->children.push_back(yystack.l_mark[-4].node);
                   yyval.node->children.push_back(yystack.l_mark[-1].node);
                   yyval.node->isIfElse = false; /* Set isIfElse flag to false*/
               }
-#line 1420 "y.tab.c"
+#line 1443 "y.tab.c"
 break;
 case 35:
-#line 249 "parser.y"
+#line 271 "parser.y"
 	{
                  yyval.node = new Node("if_statement", "if_else");
                  yyval.node->children.push_back(yystack.l_mark[-8].node);
@@ -1427,49 +1450,49 @@ case 35:
                  yyval.node->children.push_back(yystack.l_mark[-1].node);
                 yyval.node->isIfElse = true; /* Set isIfElse flag to true*/
               }
-#line 1431 "y.tab.c"
+#line 1454 "y.tab.c"
 break;
 case 36:
-#line 258 "parser.y"
+#line 280 "parser.y"
 	{
                      yyval.node = new Node("while_statement", "while");
                      yyval.node->children.push_back(yystack.l_mark[-5].node); /* statements*/
                      yyval.node->children.push_back(yystack.l_mark[-1].node); /* comparison*/
                  }
-#line 1440 "y.tab.c"
+#line 1463 "y.tab.c"
 break;
 case 37:
-#line 266 "parser.y"
+#line 288 "parser.y"
 	{
                         yyval.node = new Node("list_of_cte_strings", yystack.l_mark[0].str);
                      }
-#line 1447 "y.tab.c"
+#line 1470 "y.tab.c"
 break;
 case 38:
-#line 269 "parser.y"
+#line 291 "parser.y"
 	{
                         yyval.node = yystack.l_mark[-2].node;
                         yyval.node->children.push_back(new Node("CTE_STRING", yystack.l_mark[0].str));
                      }
-#line 1455 "y.tab.c"
+#line 1478 "y.tab.c"
 break;
 case 39:
-#line 275 "parser.y"
+#line 297 "parser.y"
 	{
                         yyval.node = new Node("list_of_expressions", "");
                         yyval.node->children.push_back(yystack.l_mark[0].node);
                      }
-#line 1463 "y.tab.c"
+#line 1486 "y.tab.c"
 break;
 case 40:
-#line 279 "parser.y"
+#line 301 "parser.y"
 	{
                         yyval.node = yystack.l_mark[-2].node;
                         yyval.node->children.push_back(yystack.l_mark[0].node);
                      }
-#line 1471 "y.tab.c"
+#line 1494 "y.tab.c"
 break;
-#line 1473 "y.tab.c"
+#line 1496 "y.tab.c"
     default:
         break;
     }

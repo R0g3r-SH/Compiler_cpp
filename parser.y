@@ -110,40 +110,58 @@ statement : var_declaration SEMI_COLON {
 
 var_declaration
     : VAR var_list POINTS type {
-        // Construct the var_declaration node
         $$ = new Node("var_declaration", "");
         $$->children.push_back($2); // Add var_list as a child of var_declaration
         $$->children.push_back($4); // Add type as a child of var_declaration
+
+        // Obtener la lista de variables y el tipo
+        Node* varListNode = $2;
+        std::string varType = $4->value;
+
+        // Iterar sobre la lista de variables y agregar cada una a la tabla de símbolos
+        for (Node* varNode : varListNode->children) {
+            std::string varName = varNode->value;
+            std::string varType = $4->value;
+
+            // Agregar la variable a la tabla de símbolos
+            addVariableToDirectory(varName, varType , 0);
+        }
     }
     ;
 
 var_list
     : ID {
-        // Construct the var_list node with ID value
-        $$ = new Node("var_list", $1);
+        $$ = new Node("var_list", "");
+        $$->children.push_back(new Node("ID", $1));
     }
     | var_list COMMA ID {
-        // Extend the var_list node with another ID
         $$ = $1;
-        $$->children.push_back(new Node("var_list", $3));
+        $$->children.push_back(new Node("ID", $3));
     }
     ;
 
 factor : ID {
             // Construct the factor node with ID value
-            $$ = new Node("factor", $1);
+        if (!isVariableDefined($1)) {
+            yyerror(("Variable '" + std::string($1) + "' no declarada").c_str());
+            exit(1);
+        }
+        $$ = new Node("factor", $1 , "ID"); // Agregar el tipo de la variable al nodo "factor"
         }
        | CTE_INT {
             // Construct the factor node with CTE_INT value
             std::stringstream ss;
             ss << $1;
-            $$ = new Node("factor", ss.str());
+            $$ = new Node("factor", ss.str() , "INT"); // Agregar el tipo "INT" al nodo "factor
+         
+        
         }
        | CTE_FLOAT {
             // Construct the factor node with CTE_FLOAT value
             std::stringstream ss;
             ss << $1;
-            $$ = new Node("factor", ss.str());
+            $$ = new Node("factor", ss.str(), "FLOAT"); // Agregar el tipo "FLOAT" al nodo "factor
+         
         }
        | LEFT_PAREN expression RIGHT_PAREN {
             // Construct the factor node with expression value
@@ -159,8 +177,7 @@ factor : ID {
         }
        ;
 
-
-       type : INT {
+type : INT {
     $$ = new Node("type", "INT");
 }
      | FLOAT {
@@ -220,9 +237,14 @@ comparison : expression
 
 
 assignment : ID EQUALS expression {
-               $$ = new Node("assignment", "=");
-               $$->children.push_back(new Node("ID", $1));
-               $$->children.push_back($3);
+             if (!isVariableDefined($1)) {
+                yyerror(("Error: Variable '" + std::string($1) + "' no declarada").c_str());
+                exit(1);
+                }
+                
+                $$ = new Node("assignment", "=");
+                $$->children.push_back(new Node("ID", $1));
+                $$->children.push_back($3);
             }
            ;
 
