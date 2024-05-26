@@ -14,7 +14,7 @@ int temporaryCounter = 0; // Counter for generating temporary variables
 
 
 std::string getNextTemporary() {
-    return std::to_string(temporaryCounter++);
+    return std::to_string(memoryManager.allocateTemp());
 }
 
 std::string getNextLabel() {

@@ -213,8 +213,10 @@ expression : term {
            }
            | expression MINUS term {
                $$ = new Node("expression", "-");
+                $$->children.push_back($1);
                $$->children.push_back($3);
            }
+
            ;
 
 comparison : expression

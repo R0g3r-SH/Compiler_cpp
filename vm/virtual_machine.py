@@ -1,22 +1,25 @@
 class VirtualMachine:
     def __init__(self):
         self.memory = {}
+        self.temp_vars = {}
         self.labels = {}
         self.pc = 0  # Program counter
 
     def get_value(self, arg):
-            return self.memory.get(int(arg), 0)
-
+        return self.memory.get(int(arg), 0)
+    
     def set_value(self, arg, value):
-            self.memory[int(arg)] = value
+        self.memory[int(arg)] = value
 
     def execute_code(self, instructions):
-        print("Executing code...")
+        print("💻 Executing code... ")
         # First pass: collect labels
+        print("First pass: collecting labels...")
         for idx, instruction in enumerate(instructions):
             if instruction[0] == 'LABEL':
                 self.labels[instruction[3]] = idx
 
+        print("Executing instructions...")
         while self.pc < len(instructions):
             instruction = instructions[self.pc]
             op = instruction[0]
@@ -24,14 +27,62 @@ class VirtualMachine:
             arg2 = instruction[2]
             arg3 = instruction[3]
 
+
             if op == '=':
-                self.set_value(arg3, int(arg1))
+                # Review if arg1 is already a memory address
+                value_to_assign = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                self.set_value(arg3, value_to_assign)
             elif op == '>':
-                if self.get_value(arg1) > self.get_value(arg2):
-                    self.pc = self.labels[arg3] if arg3 in self.labels else int(arg3) - 1
-            elif op == 'GOTO_FALSE':
-                if not self.get_value(arg1):
+                # Review if arg1 is already a memory address
+                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                if arg1 > arg2:
+                    #save the value of the comparison in the memory
+                    self.set_value(arg3, 1)
+                    #jump to the label next to the comparison
+                else:
+                    self.set_value(arg3, 0)
+                    
+            elif op == '<':
+                # Review if arg1 is already a memory address
+                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                
+                if arg1 < arg2:
+                    #save the value of the comparison in the memory
+                    self.set_value(arg3, 1)
+                    #jump to the label next to the comparison
+                else:
+                    self.set_value(arg3, 0)
+            
+            elif op == '+':
+                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                self.set_value(arg3, arg1 + arg2)
+            elif op == '-':
+                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                self.set_value(arg3, arg1 - arg2)
+            elif op == '*':
+                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                self.set_value(arg3, arg1 * arg2)
+
+            elif op == '/':
+                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                self.set_value(arg3, arg1 / arg2)
+
+            elif op == 'GOTO_TRUE':
+                condition =int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                if condition:
                     self.pc = self.labels[arg3] - 1
+
+            elif op == 'GOTO_FALSE':
+                condition =int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                if not condition:
+                    self.pc = self.labels[arg3] - 1
+    
             elif op == 'PRINT':
                 print("Output:", self.get_value(arg3))
             elif op == 'GOTO':
@@ -43,7 +94,7 @@ class VirtualMachine:
 
             self.pc += 1
 
-        print("Execution completed.")
+        print("Execution completed. ⚡")
 
 
 def preprocess_line(line):

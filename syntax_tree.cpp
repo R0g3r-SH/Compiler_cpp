@@ -54,8 +54,8 @@ std::string getType(Node *node)
         std::string leftType = getType(node->children[0]);
         std::string rightType = getType(node->children[1]);
 
-        if ((leftType == "FLOAT" && rightType == "FLOAT") || 
-            (leftType == "INT" && rightType == "FLOAT") || 
+        if ((leftType == "FLOAT" && rightType == "FLOAT") ||
+            (leftType == "INT" && rightType == "FLOAT") ||
             (leftType == "FLOAT" && rightType == "INT"))
         {
             return "FLOAT";
@@ -145,7 +145,23 @@ void generateQuadruples(Node *node)
         {
             addQuadruple("-", leftOperand, rightOperand, result);
         }
-        else if (op == "*")
+        // Update the value of the expression node to be the result
+        node->value = result;
+    }
+
+    else if (node->type == "term" && !node->quadruplesGenerated)
+    {
+        node->quadruplesGenerated = true;
+        generateQuadruples(node->children[0]); // Generate quadruples for the first operand
+        generateQuadruples(node->children[1]); // Generate quadruples for the second operand
+
+        std::string op = node->value;
+        std::string result = getNextTemporary();
+        std::string leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
+        std::string rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
+
+        // Generate quadruple for the multiplication operation
+        if (op == "*")
         {
             addQuadruple("*", leftOperand, rightOperand, result);
         }
@@ -154,9 +170,10 @@ void generateQuadruples(Node *node)
             addQuadruple("/", leftOperand, rightOperand, result);
         }
 
-        // Update the value of the expression node to be the result
+        // Update the value of the term node to be the result
         node->value = result;
     }
+
     else if (node->type == "print_statement" && !node->quadruplesGenerated)
     {
         node->quadruplesGenerated = true; // Set the flag to indicate quadruples are generated for this node
@@ -252,25 +269,22 @@ void generateQuadruples(Node *node)
     {
         node->quadruplesGenerated = true; // Set the flag to indicate quadruples are generated for this node
 
-        // Generate a label for the beginning of the while loop
+        // Generate a label for the beginning of the do-while loop
         std::string labelStart = getNextLabel();
         addQuadruple("LABEL", "", "", labelStart);
+
+        // Generate quadruples for the statements inside the do-while loop
+        generateQuadruples(node->children[0]);
 
         // Generate quadruples for the comparison expression
         generateQuadruples(node->children[1]);
 
-        // Generate a quadruple to jump out of the loop if the comparison is false
+        // Generate a quadruple to jump back to the beginning of the do-while loop
         std::string condition = node->children[1]->value;
+        addQuadruple("GOTO_TRUE", condition, "", labelStart);
+
+        // Generate a label for the end of the do-while loop
         std::string labelEnd = getNextLabel();
-        addQuadruple("GOTO_FALSE", condition, "", labelEnd);
-
-        // Generate quadruples for the statements inside the while loop
-        generateQuadruples(node->children[0]);
-
-        // Generate a quadruple to jump back to the beginning of the while loop
-        addQuadruple("GOTO", "", "", labelStart);
-
-        // Generate a label for the end of the while loop
         addQuadruple("LABEL", "", "", labelEnd);
     }
 
