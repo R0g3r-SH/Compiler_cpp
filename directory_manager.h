@@ -19,6 +19,7 @@ struct VariableInfo {
     std::string type;
     std::string name;
     int scope;
+    int memoryAllocation;
 };
 
 struct FunctionInfo {

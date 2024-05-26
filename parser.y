@@ -60,10 +60,10 @@ Node* rootNode = nullptr;
 
 %%
 
-program : PROGRAM statements END { 
+program : PROGRAM ID SEMI_COLON statements END { 
 
     $$ = new Node("program", "program");
-    $$->children.push_back($2); // Add statements as a child of the program node
+    $$->children.push_back($4); // Add statements as a child of the program node
     rootNode = $$; // Save the root node
     printf("Program parsed !!! \n");
 

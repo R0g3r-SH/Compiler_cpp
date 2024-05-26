@@ -13,6 +13,7 @@ public:
     bool quadruplesGenerated = false;
     bool isIfElse; // Flag to indicate if it's an IF-ELSE statement
 
+
      Node(std::string type, std::string value, std::string numeric_type = "") 
         : type(type), value(value), numeric_type(numeric_type), isIfElse(false) {} // Constructor
 };

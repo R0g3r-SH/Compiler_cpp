@@ -48,17 +48,19 @@ void analyzeFile(const std::string& filePath, std::ofstream& logFile) {
     // Parse the file
     if (yyparse() == 0) {
         logFile << "Análisis sintáctico completado con éxito." << std::endl;
+
+        printVariableDirectory(logFile);
+
+
+        printQuadruples(logFile);
+
+        fclose(file);
+
     } else {
         logFile << "Error en el análisis sintáctico." << std::endl;
     }
 
-    // Print variable directory
-    printVariableDirectory(logFile);
 
-
-    printQuadruples(logFile);
-
-    fclose(file);
 }
 
 int main() {

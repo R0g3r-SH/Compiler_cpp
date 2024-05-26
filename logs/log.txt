@@ -1,1 +1,4 @@
 Analizando archivo: tests/input.txt
+Análisis sintáctico completado con éxito.
+Variable: variable | Type: INT | Scope: 0
+Variable: variable2 | Type: INT | Scope: 0

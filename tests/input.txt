@@ -1,0 +1,16 @@
+PROGRAM hola;
+
+VAR variable : INT;
+VAR variable2 : INT;
+
+variable = 2;
+
+variable2 = 3;
+
+IF (variable > variable2){
+    PRINT(variable);
+}ELSE {
+    PRINT(variable2);
+}
+
+END

@@ -2,6 +2,8 @@
 #include "quadruple_manager.h"
 #include "directory_manager.h"
 #include "semantic_cube.h"
+#include "memory_manager.h"
+
 #include <iostream>
 
 void printSyntaxTree(const Node *root)
@@ -98,9 +100,13 @@ void generateQuadruples(Node *node)
         // For assignment nodes, generate quadruples for the expression on the right-hand side
         generateQuadruples(node->children[1]);
 
+        // Allocate memory for the variable based on its type
+        int memoryAddress = memoryManager.allocateMemoryByType(node->children[0]->value, varType);
+        // Update the memory allocation for the variable in the symbol table
+        symbolTable[node->children[0]->value].memoryAllocation = memoryAddress;
         // Generate quadruple for assignment
         std::string op = "=";
-        std::string result = node->children[0]->value;  // Variable name
+        std::string result = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
         std::string operand = node->children[1]->value; // Value to assign
         addQuadruple(op, operand, "", result);
     }
@@ -122,8 +128,8 @@ void generateQuadruples(Node *node)
 
         std::string op = node->value;
         std::string result = getNextTemporary();
-        std::string leftOperand = node->children[0]->value;
-        std::string rightOperand = node->children[1]->value;
+        std::string leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
+        std::string rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
 
         std::string leftType = getType(node->children[0]);
         std::string rightType = getType(node->children[1]);
@@ -160,7 +166,7 @@ void generateQuadruples(Node *node)
         {
             generateQuadruples(child);
             // Generate quadruple for printing the expression
-            addQuadruple("PRINT", "", "", child->value);
+            addQuadruple("PRINT", "", "", std::to_string(symbolTable[child->value].memoryAllocation));
         }
     }
 
@@ -210,8 +216,8 @@ void generateQuadruples(Node *node)
         // Generate quadruple for the comparison
         std::string op = node->value;
         std::string result = getNextTemporary();
-        std::string leftOperand = node->children[0]->value;
-        std::string rightOperand = node->children[1]->value;
+        std::string leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
+        std::string rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
 
         if (op == "==")
         {

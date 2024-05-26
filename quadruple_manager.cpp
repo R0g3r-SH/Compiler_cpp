@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include "memory_manager.h"
 
 
 // Define the queue of quadruples
@@ -13,7 +14,7 @@ int temporaryCounter = 0; // Counter for generating temporary variables
 
 
 std::string getNextTemporary() {
-    return "T" + std::to_string(temporaryCounter++);
+    return std::to_string(temporaryCounter++);
 }
 
 std::string getNextLabel() {
