@@ -136,7 +136,7 @@ static const YYINT yylhs[] = {                           -1,
 static const YYINT yylen[] = {                            2,
     5,    0,    2,    2,    2,    2,    1,    1,    4,    1,
     3,    1,    1,    1,    3,    2,    2,    1,    1,    1,
-    1,    3,    3,    1,    3,    3,    1,    3,    3,    3,
+    1,    3,    3,    1,    3,    3,    3,    3,    3,    1,
     3,    4,    4,    7,   11,    8,    1,    3,    1,    3,
 };
 static const YYINT yydefred[] = {                         0,
@@ -220,8 +220,8 @@ static const YYINT yytable[] = {                         44,
    25,   24,   24,   24,   24,   24,   25,   26,   25,   25,
    25,   25,   25,   26,   66,   26,   52,   60,   74,   50,
    51,   76,   77,   79,   84,   26,   82,   26,   26,   26,
-   26,   26,   57,   58,   59,   50,   51,   83,   31,   27,
-   28,   29,   30,   81,
+   26,   26,   57,   58,   59,   50,   51,   83,   31,   30,
+   27,   28,   29,   81,
 };
 static const YYINT yycheck[] = {                         23,
    18,  258,  258,  260,   22,  263,  264,  258,  265,  260,
@@ -310,10 +310,10 @@ static const char *const yyrule[] = {
 "expression : term",
 "expression : expression PLUS term",
 "expression : expression MINUS term",
-"comparison : expression",
 "comparison : expression GREATER_THAN expression",
 "comparison : expression LESS_THAN expression",
 "comparison : expression NOT_EQUALS expression",
+"comparison : expression",
 "assignment : ID EQUALS expression",
 "print_statement : PRINT LEFT_PAREN list_of_expressions RIGHT_PAREN",
 "print_statement : PRINT LEFT_PAREN list_of_cte_strings RIGHT_PAREN",
@@ -455,7 +455,7 @@ static YYINT  *yylexp = 0;
 
 static YYINT  *yylexemes = 0;
 #endif /* YYBTYACC */
-#line 309 "parser.y"
+#line 310 "parser.y"
 
 
 
@@ -1371,8 +1371,8 @@ case 26:
            }
 #line 1373 "y.tab.c"
 break;
-case 28:
-#line 223 "parser.y"
+case 27:
+#line 222 "parser.y"
 	{
                yyval.node = new Node("comparison", ">");
                yyval.node->children.push_back(yystack.l_mark[-2].node);
@@ -1380,8 +1380,8 @@ case 28:
            }
 #line 1382 "y.tab.c"
 break;
-case 29:
-#line 228 "parser.y"
+case 28:
+#line 227 "parser.y"
 	{
                yyval.node = new Node("comparison", "<");
                yyval.node->children.push_back(yystack.l_mark[-2].node);
@@ -1389,14 +1389,21 @@ case 29:
            }
 #line 1391 "y.tab.c"
 break;
-case 30:
-#line 233 "parser.y"
+case 29:
+#line 232 "parser.y"
 	{
                yyval.node = new Node("comparison", "!=");
                yyval.node->children.push_back(yystack.l_mark[-2].node);
                yyval.node->children.push_back(yystack.l_mark[0].node);
            }
 #line 1400 "y.tab.c"
+break;
+case 30:
+#line 237 "parser.y"
+	{
+               yyval.node = yystack.l_mark[0].node;
+           }
+#line 1407 "y.tab.c"
 break;
 case 31:
 #line 241 "parser.y"
@@ -1410,7 +1417,7 @@ case 31:
                 yyval.node->children.push_back(new Node("ID", yystack.l_mark[-2].str));
                 yyval.node->children.push_back(yystack.l_mark[0].node);
             }
-#line 1414 "y.tab.c"
+#line 1421 "y.tab.c"
 break;
 case 32:
 #line 253 "parser.y"
@@ -1420,7 +1427,7 @@ case 32:
                         yyval.node->children.push_back(child);
                     }
                  }
-#line 1424 "y.tab.c"
+#line 1431 "y.tab.c"
 break;
 case 33:
 #line 259 "parser.y"
@@ -1430,7 +1437,7 @@ case 33:
                         yyval.node->children.push_back(child);
                     }
                 }
-#line 1434 "y.tab.c"
+#line 1441 "y.tab.c"
 break;
 case 34:
 #line 267 "parser.y"
@@ -1440,7 +1447,7 @@ case 34:
                   yyval.node->children.push_back(yystack.l_mark[-1].node);
                   yyval.node->isIfElse = false; /* Set isIfElse flag to false*/
               }
-#line 1444 "y.tab.c"
+#line 1451 "y.tab.c"
 break;
 case 35:
 #line 273 "parser.y"
@@ -1451,7 +1458,7 @@ case 35:
                  yyval.node->children.push_back(yystack.l_mark[-1].node);
                 yyval.node->isIfElse = true; /* Set isIfElse flag to true*/
               }
-#line 1455 "y.tab.c"
+#line 1462 "y.tab.c"
 break;
 case 36:
 #line 282 "parser.y"
@@ -1460,14 +1467,15 @@ case 36:
                      yyval.node->children.push_back(yystack.l_mark[-5].node); /* statements*/
                      yyval.node->children.push_back(yystack.l_mark[-1].node); /* comparison*/
                  }
-#line 1464 "y.tab.c"
+#line 1471 "y.tab.c"
 break;
 case 37:
-#line 290 "parser.y"
+#line 289 "parser.y"
 	{
-                        yyval.node = new Node("list_of_cte_strings", yystack.l_mark[0].str);
+                        yyval.node = new Node("list_of_cte_strings", "");
+                        yyval.node->children.push_back(new Node("CTE_STRING", yystack.l_mark[0].str));
                      }
-#line 1471 "y.tab.c"
+#line 1479 "y.tab.c"
 break;
 case 38:
 #line 293 "parser.y"
@@ -1475,25 +1483,25 @@ case 38:
                         yyval.node = yystack.l_mark[-2].node;
                         yyval.node->children.push_back(new Node("CTE_STRING", yystack.l_mark[0].str));
                      }
-#line 1479 "y.tab.c"
+#line 1487 "y.tab.c"
 break;
 case 39:
-#line 299 "parser.y"
+#line 300 "parser.y"
 	{
                         yyval.node = new Node("list_of_expressions", "");
                         yyval.node->children.push_back(yystack.l_mark[0].node);
                      }
-#line 1487 "y.tab.c"
+#line 1495 "y.tab.c"
 break;
 case 40:
-#line 303 "parser.y"
+#line 304 "parser.y"
 	{
                         yyval.node = yystack.l_mark[-2].node;
                         yyval.node->children.push_back(yystack.l_mark[0].node);
                      }
-#line 1495 "y.tab.c"
+#line 1503 "y.tab.c"
 break;
-#line 1497 "y.tab.c"
+#line 1505 "y.tab.c"
     default:
         break;
     }

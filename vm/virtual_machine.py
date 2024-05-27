@@ -9,7 +9,14 @@ class VirtualMachine:
         return self.memory.get(int(arg), 0)
     
     def set_value(self, arg, value):
-        self.memory[int(arg)] = value
+        
+        if arg[0] == 't':
+            self.temp_vars[arg] = value
+        else:
+            self.memory[int(arg)] = value
+                
+
+        
 
     def execute_code(self, instructions):
         print("💻 Executing code... ")
@@ -30,18 +37,30 @@ class VirtualMachine:
 
             if op == '=':
                 # Review if arg1 is already a memory address
-                value_to_assign = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                try:
+                    address = int(arg1)
+                    value_to_assign = self.memory.get(address)
+                except (ValueError, TypeError):
+                    address = None
+                    value_to_assign = None
+
+                # Check if the value can be converted to int, float, or string
+                if value_to_assign is None:
+                    try:
+                        value_to_assign = int(arg1)
+                    except ValueError:
+                        try:
+                            value_to_assign = float(arg1)
+                        except ValueError:
+                            value_to_assign = str(arg1)
+                
+                # If arg1 is a memory address and has a value, use that value
+                if address is not None and value_to_assign is None:
+                    value_to_assign = self.get_value(arg1)
+
+                # Assign the value to arg3
                 self.set_value(arg3, value_to_assign)
-            elif op == '>':
-                # Review if arg1 is already a memory address
-                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
-                if arg1 > arg2:
-                    #save the value of the comparison in the memory
-                    self.set_value(arg3, 1)
-                    #jump to the label next to the comparison
-                else:
-                    self.set_value(arg3, 0)
+
                     
             elif op == '<':
                 # Review if arg1 is already a memory address
@@ -54,7 +73,18 @@ class VirtualMachine:
                     #jump to the label next to the comparison
                 else:
                     self.set_value(arg3, 0)
-            
+
+            elif op == '>':
+                # Review if arg1 is already a memory address
+                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                
+                if arg1 < arg2:
+                    #save the value of the comparison in the memory
+                    self.set_value(arg3, 1)
+                    #jump to the label next to the comparison
+                else:
+                    self.set_value(arg3, 0)
             elif op == '+':
                 arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
                 arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
@@ -84,7 +114,15 @@ class VirtualMachine:
                     self.pc = self.labels[arg3] - 1
     
             elif op == 'PRINT':
-                print("Output:", self.get_value(arg3))
+                
+                #validate if the value is a memory address if not, print the value
+                try:
+                    value = self.memory.get(int(arg3))
+                except ValueError:
+                    value = arg3
+                print("->> Output: ", value)
+
+
             elif op == 'GOTO':
                 self.pc = self.labels[arg3] - 1
             elif op == 'LABEL':

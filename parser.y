@@ -219,8 +219,7 @@ expression : term {
 
            ;
 
-comparison : expression
-           | expression GREATER_THAN expression {
+comparison : expression GREATER_THAN expression {
                $$ = new Node("comparison", ">");
                $$->children.push_back($1);
                $$->children.push_back($3);
@@ -235,8 +234,9 @@ comparison : expression
                $$->children.push_back($1);
                $$->children.push_back($3);
            }
-           ;
-
+           | expression {
+               $$ = $1;
+           };
 
 assignment : ID EQUALS expression {
              if (!isVariableDefined($1)) {
@@ -286,15 +286,16 @@ while_statement : DO LEFT_BRACE statements RIGHT_BRACE WHILE LEFT_PAREN comparis
                  }
                  ;
 
-
 list_of_cte_strings : CTE_STRING {
-                        $$ = new Node("list_of_cte_strings", $1);
+                        $$ = new Node("list_of_cte_strings", "");
+                        $$->children.push_back(new Node("CTE_STRING", $1));
                      }
                     | list_of_cte_strings COMMA CTE_STRING {
                         $$ = $1;
                         $$->children.push_back(new Node("CTE_STRING", $3));
                      }
                      ;
+
 
 list_of_expressions : expression {
                         $$ = new Node("list_of_expressions", "");

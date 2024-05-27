@@ -178,12 +178,21 @@ void generateQuadruples(Node *node)
     {
         node->quadruplesGenerated = true; // Set the flag to indicate quadruples are generated for this node
 
-        // Generate quadruples for each expression to be printed
+        // Generate quadruples for each expression or string literal to be printed
         for (auto &child : node->children)
         {
-            generateQuadruples(child);
-            // Generate quadruple for printing the expression
-            addQuadruple("PRINT", "", "", std::to_string(symbolTable[child->value].memoryAllocation));
+            std::cout << "child->type: " << child->type << std::endl;
+            if (child->type == "CTE_STRING")
+            {
+                // Generate quadruple for printing the string literal
+                addQuadruple("PRINT", "", "", child->value);
+            }
+            else
+            {
+                generateQuadruples(child);
+                // Generate quadruple for printing the variable or expression
+                addQuadruple("PRINT", "", "", std::to_string(symbolTable[child->value].memoryAllocation));
+            }
         }
     }
 
@@ -281,6 +290,8 @@ void generateQuadruples(Node *node)
 
         // Generate a quadruple to jump back to the beginning of the do-while loop
         std::string condition = node->children[1]->value;
+
+    
         addQuadruple("GOTO_TRUE", condition, "", labelStart);
 
         // Generate a label for the end of the do-while loop
