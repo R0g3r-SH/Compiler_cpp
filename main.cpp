@@ -54,6 +54,8 @@ void analyzeFile(const std::string& filePath, std::ofstream& logFile) {
 
         printQuadruples(logFile);
 
+        memoryManager.printMemory();
+
         fclose(file);
 
     } else {

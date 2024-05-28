@@ -6,7 +6,10 @@ class VirtualMachine:
         self.pc = 0  # Program counter
 
     def get_value(self, arg):
-        return self.memory.get(int(arg), 0)
+        try :
+            return self.memory.get(int(arg), 0)
+        except ValueError:
+            return self.temp_vars.get(arg, 0)
     
     def set_value(self, arg, value):
         
@@ -64,8 +67,13 @@ class VirtualMachine:
                     
             elif op == '<':
                 # Review if arg1 is already a memory address
-                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                try:
+                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+
+                except ValueError:
+                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
                 
                 if arg1 < arg2:
                     #save the value of the comparison in the memory
@@ -76,8 +84,13 @@ class VirtualMachine:
 
             elif op == '>':
                 # Review if arg1 is already a memory address
-                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                try:
+                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                    
+                except ValueError:
+                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
                 
                 if arg1 < arg2:
                     #save the value of the comparison in the memory
@@ -86,21 +99,45 @@ class VirtualMachine:
                 else:
                     self.set_value(arg3, 0)
             elif op == '+':
-                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                try:
+                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                    
+                except ValueError:
+                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+
                 self.set_value(arg3, arg1 + arg2)
             elif op == '-':
-                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                try:
+                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                    
+                except ValueError:
+                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+
                 self.set_value(arg3, arg1 - arg2)
             elif op == '*':
-                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                try:
+                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                    
+                except ValueError:
+                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+
                 self.set_value(arg3, arg1 * arg2)
 
             elif op == '/':
-                arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                try:
+                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                    
+                except ValueError:
+                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+
                 self.set_value(arg3, arg1 / arg2)
 
             elif op == 'GOTO_TRUE':

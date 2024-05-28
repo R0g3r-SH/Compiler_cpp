@@ -15,6 +15,8 @@ std::string toUpper(const std::string &str) {
 }
 
 void initializeCube() {
+    
+    
     semanticCube["INT"]["INT"]["+"] = "INT";
     semanticCube["INT"]["INT"]["-"] = "INT";
     semanticCube["INT"]["INT"]["*"] = "INT";
@@ -34,6 +36,7 @@ void initializeCube() {
     semanticCube["FLOAT"]["INT"]["-"] = "FLOAT";
     semanticCube["FLOAT"]["INT"]["*"] = "FLOAT";
     semanticCube["FLOAT"]["INT"]["/"] = "FLOAT";
+
 }
 
 

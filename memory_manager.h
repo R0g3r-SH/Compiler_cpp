@@ -13,7 +13,7 @@ public:
     int allocateInt(const std::string& var);
     int allocateFloat(const std::string& var);
     int allocateTemp();
-    void printMemory(std::ofstream& logFile) const;
+    void printMemory();
     void freeMemory(const std::string& var);
     int allocateMemoryByType(const std::string& var, const std::string& type);
 

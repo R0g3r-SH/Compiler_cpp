@@ -60,7 +60,8 @@ int MemoryManager::allocateMemoryByType(const std::string &var, const std::strin
     else if (type == "FLOAT")
     {
         return allocateFloat(var);
-    }else if (type == "TEMP")
+    }
+    else if (type == "TEMP")
     {
         return allocateTemp();
     }
@@ -71,9 +72,15 @@ int MemoryManager::allocateMemoryByType(const std::string &var, const std::strin
     }
 }
 
-
-void MemoryManager::printMemory(std::ofstream &logFile) const
+void MemoryManager::printMemory()
 {
+
+    std::ofstream logFile("./memory/memory.txt");
+    if (!logFile)
+    {
+        std::cerr << "No se pudo crear el archivo de logs." << std::endl;
+        return;
+    }
     for (const auto &pair : varToAddress)
     {
         logFile << pair.first << " : " << pair.second << std::endl;

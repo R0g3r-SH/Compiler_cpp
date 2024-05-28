@@ -1,5 +1,4 @@
-Analizando archivo: tests/while_loop.txt
+Analizando archivo: tests/intput.txt
 Análisis sintáctico completado con éxito.
-Variable: flag | Type: INT | Scope: 0
-Variable: pickles | Type: INT | Scope: 0
-Variable: pickles2 | Type: INT | Scope: 0
+Variable: pickex2 | Type: FLOAT | Scope: 0
+Variable: pickles | Type: FLOAT | Scope: 0

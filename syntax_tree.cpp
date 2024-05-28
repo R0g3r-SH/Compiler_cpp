@@ -117,36 +117,38 @@ void generateQuadruples(Node *node)
         generateQuadruples(node->children[0]);
         generateQuadruples(node->children[1]);
 
-        if (!isVariableDefined(node->children[0]->value))
-        {
-            exit(1);
-        }
-        if (!isVariableDefined(node->children[1]->value))
-        {
-            exit(1);
-        }
-
         std::string op = node->value;
         std::string result = getNextTemporary();
-        std::string leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
-        std::string rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
 
-        std::string leftType = getType(node->children[0]);
-        std::string rightType = getType(node->children[1]);
-        std::string resultType = getResultType(leftType, rightType, op);
-
-        // Generate quadruple for the operation
-
-        if (op == "+")
+        std::string leftOperand, rightOperand;
+        if (node->children[0]->type == "ID")
         {
-            addQuadruple("+", leftOperand, rightOperand, result);
+            leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
         }
-        else if (op == "-")
+        else if (node->children[0]->type == "INT" || node->children[0]->type == "FLOAT")
         {
-            addQuadruple("-", leftOperand, rightOperand, result);
+            leftOperand = node->children[0]->value;
         }
-        // Update the value of the expression node to be the result
-        node->value = result;
+        else
+        {
+            leftOperand = node->children[0]->value;
+        }
+
+        if (node->children[1]->type == "ID")
+        {
+            rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
+        }
+        else if (node->children[1]->type == "INT" || node->children[1]->type == "FLOAT")
+        {
+            rightOperand = node->children[1]->value;
+        }
+        else
+        {
+            rightOperand = node->children[1]->value;
+        }
+
+        addQuadruple(op, leftOperand, rightOperand, result);
+        node->value = result; // Update the value of the expression node to be the result
     }
 
     else if (node->type == "term" && !node->quadruplesGenerated)
@@ -157,8 +159,35 @@ void generateQuadruples(Node *node)
 
         std::string op = node->value;
         std::string result = getNextTemporary();
-        std::string leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
-        std::string rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
+
+        // review if is a value stored in a variable or a number
+        std::string leftOperand, rightOperand;
+
+        if (node->children[0]->type == "ID")
+        {
+            leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
+        }
+        else if (node->children[0]->type == "INT" || node->children[0]->type == "FLOAT")
+        {
+            leftOperand = node->children[0]->value;
+        }
+        else
+        {
+            leftOperand = node->children[0]->value;
+        }
+
+        if (node->children[1]->type == "ID")
+        {
+            rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
+        }
+        else if (node->children[1]->type == "INT" || node->children[1]->type == "FLOAT")
+        {
+            rightOperand = node->children[1]->value;
+        }
+        else
+        {
+            rightOperand = node->children[1]->value;
+        }
 
         // Generate quadruple for the multiplication operation
         if (op == "*")
@@ -242,8 +271,38 @@ void generateQuadruples(Node *node)
         // Generate quadruple for the comparison
         std::string op = node->value;
         std::string result = getNextTemporary();
-        std::string leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
-        std::string rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
+
+        // review if is a value stored in a variable or a number
+
+        std::string leftOperand, rightOperand;
+
+        if (node->children[0]->numeric_type == "ID")
+        {
+            leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
+        }
+        else if (node->children[0]->type == "INT" || node->children[0]->type == "FLOAT")
+        {
+            leftOperand = node->children[0]->value;
+        }
+        else
+        {
+            leftOperand = node->children[0]->value;
+        }
+
+        if (node->children[1]->numeric_type == "ID")
+        {
+            rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
+        }
+        else if (node->children[1]->type == "INT" || node->children[1]->type == "FLOAT")
+        {
+            rightOperand = node->children[1]->value;
+        }
+        else
+        {
+            rightOperand = node->children[1]->value;
+        }
+
+        // review if allready have the memory allocation
 
         if (op == "==")
         {
@@ -291,7 +350,6 @@ void generateQuadruples(Node *node)
         // Generate a quadruple to jump back to the beginning of the do-while loop
         std::string condition = node->children[1]->value;
 
-    
         addQuadruple("GOTO_TRUE", condition, "", labelStart);
 
         // Generate a label for the end of the do-while loop
