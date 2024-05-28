@@ -1,14 +1,13 @@
 PROGRAM test1;
 
-VAR current, next: INT;
+VAR current, current2: INT;
 
-current = 1;
-next = 1;
+current = 8 ;
+current2 = 4 ;
+current  = current2 -current;
 
-DO {
-    PRINT(current);
-    next = current + next;
-    current = next - current;
-} WHILE (current < 20)
+
+PRINT(current);
+
 
 END

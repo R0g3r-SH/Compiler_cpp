@@ -76,6 +76,33 @@ void generateQuadruples(Node *node)
         return;
     }
 
+    if (node->type == "unary_minus" && !node->quadruplesGenerated)
+    {
+        node->quadruplesGenerated = true;
+        generateQuadruples(node->children[0]); // Generate quadruples for the operand
+
+        std::string op = "-";
+        std::string result = getNextTemporary();
+
+        std::string operand;
+
+        if (node->children[0]->numeric_type == "ID")
+        {
+            operand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
+        }
+        else if (node->children[0]->numeric_type == "INT" || node->children[0]->numeric_type == "FLOAT")
+        {
+            operand = node->children[0]->value;
+        }
+        else
+        {
+            operand = node->children[0]->value;
+        }
+
+        addQuadruple(op, operand, "", result);
+        node->value = result; // Update the value of the unary_minus node to be the result
+    }
+
     if (node->type == "assignment" && !node->quadruplesGenerated)
     {
 

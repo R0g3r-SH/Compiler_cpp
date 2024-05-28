@@ -72,8 +72,8 @@ class VirtualMachine:
                     arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
 
                 except ValueError:
-                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
-                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+                    arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
                 
                 if arg1 < arg2:
                     #save the value of the comparison in the memory
@@ -89,8 +89,8 @@ class VirtualMachine:
                     arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
                     
                 except ValueError:
-                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
-                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+                    arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
                 
                 if arg1 < arg2:
                     #save the value of the comparison in the memory
@@ -104,28 +104,40 @@ class VirtualMachine:
                     arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
                     
                 except ValueError:
-                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
-                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+                    arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
 
                 self.set_value(arg3, arg1 + arg2)
-            elif op == '-':
-                try:
-                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
-                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
-                    
-                except ValueError:
-                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
-                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+# Inside the execute_code method of the VirtualMachine class
 
-                self.set_value(arg3, arg1 - arg2)
+            elif op == '-':
+                # Check if it's a unary or binary minus
+                if arg2 == '0':  # If arg2 is 0, it's a unary minus
+                    try:
+                        arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    except ValueError:
+                        arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+
+                    self.set_value(arg3, -arg1)  # Negate arg1 and store in arg3
+                else:
+                    # Binary minus
+                    try:
+                        arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                        arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                    except ValueError:
+                        arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                        arg2 = float(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+
+                    self.set_value(arg3, arg1 - arg2)
+
             elif op == '*':
                 try:
                     arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
                     arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
                     
                 except ValueError:
-                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
-                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+                    arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
 
                 self.set_value(arg3, arg1 * arg2)
 
@@ -135,8 +147,8 @@ class VirtualMachine:
                     arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
                     
                 except ValueError:
-                    arg1 = float(arg1) if self.memory.get(float(arg1)) is None else self.get_value(arg1)
-                    arg2 = float(arg2) if self.memory.get(float(arg2)) is None else self.get_value(arg2)
+                    arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
 
                 self.set_value(arg3, arg1 / arg2)
 

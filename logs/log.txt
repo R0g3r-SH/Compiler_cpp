@@ -1,4 +1,4 @@
 Analizando archivo: tests/input0.txt
 Análisis sintáctico completado con éxito.
 Variable: current | Type: INT | Scope: 0
-Variable: next | Type: INT | Scope: 0
+Variable: current2 | Type: INT | Scope: 0

@@ -902,32 +902,32 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 35 "scanner.l"
+#line 36 "scanner.l"
 { yylval.fnum = atof(yytext); return CTE_FLOAT; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 36 "scanner.l"
+#line 37 "scanner.l"
 { yylval.str = strdup(yytext+1); yylval.str[strlen(yylval.str)-1] = '\0'; return CTE_STRING; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 37 "scanner.l"
+#line 38 "scanner.l"
 { return PRINT; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 38 "scanner.l"
+#line 39 "scanner.l"
 { return END; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 39 "scanner.l"
+#line 40 "scanner.l"
 { yylval.str = strdup(yytext); return ID; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 41 "scanner.l"
+#line 42 "scanner.l"
 ECHO;
 	YY_BREAK
 #line 934 "lex.yy.c"
@@ -1935,6 +1935,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 41 "scanner.l"
+#line 42 "scanner.l"
 
 

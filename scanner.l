@@ -32,6 +32,7 @@ DO           { return DO; }
 "/"          { return DIVIDE; }
 
 [0-9]+       { yylval.num = atoi(yytext); return CTE_INT; }
+
 [0-9]+"."[0-9]* { yylval.fnum = atof(yytext); return CTE_FLOAT; }
 \"[^\"\n]*\" { yylval.str = strdup(yytext+1); yylval.str[strlen(yylval.str)-1] = '\0'; return CTE_STRING; }
 PRINT        { return PRINT; }

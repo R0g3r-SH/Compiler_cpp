@@ -173,7 +173,8 @@ factor : ID {
         }
        | MINUS factor {
             // Construct the factor node with MINUS factor value
-            $$ = $2;
+            $$ = new Node("unary_minus", "-");
+            $$->children.push_back($2);
         }
        ;
 
