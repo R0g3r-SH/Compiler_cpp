@@ -1,4 +1,4 @@
-PROGRAM
+PROGRAM 
 
 VAR pikles : INT;
 pikles = 2;

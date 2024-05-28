@@ -1,0 +1,17 @@
+PROGRAM test1;
+
+VAR pickles,pickex2 : FLOAT ;
+
+pickex2 = 22.2;
+
+pickles = 3*2 +5.7;
+
+pickles = pickex2 + pickles + 4.7 ;
+
+PRINT(pickles);
+
+IF (pickles * 11121 + 100 < 2003 - 299*4){
+    PRINT(":o");
+}
+
+END

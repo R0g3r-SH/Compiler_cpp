@@ -216,8 +216,7 @@ expression : term {
                 $$->children.push_back($1);
                $$->children.push_back($3);
            }
-
-           ;
+              ; 
 
 comparison : expression GREATER_THAN expression {
                $$ = new Node("comparison", ">");

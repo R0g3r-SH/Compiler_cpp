@@ -1,0 +1,14 @@
+PROGRAM test1;
+
+VAR current, next: INT;
+
+current = 1;
+next = 1;
+
+DO {
+    PRINT(current);
+    next = current + next;
+    current = next - current;
+} WHILE (current < 20)
+
+END

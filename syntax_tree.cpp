@@ -121,11 +121,12 @@ void generateQuadruples(Node *node)
         std::string result = getNextTemporary();
 
         std::string leftOperand, rightOperand;
-        if (node->children[0]->type == "ID")
+
+        if (node->children[0]->numeric_type == "ID")
         {
             leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
         }
-        else if (node->children[0]->type == "INT" || node->children[0]->type == "FLOAT")
+        else if (node->children[0]->numeric_type == "INT" || node->children[0]->type == "FLOAT")
         {
             leftOperand = node->children[0]->value;
         }
@@ -134,11 +135,11 @@ void generateQuadruples(Node *node)
             leftOperand = node->children[0]->value;
         }
 
-        if (node->children[1]->type == "ID")
+        if (node->children[1]->numeric_type == "ID")
         {
             rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
         }
-        else if (node->children[1]->type == "INT" || node->children[1]->type == "FLOAT")
+        else if (node->children[1]->numeric_type == "INT" || node->children[1]->type == "FLOAT")
         {
             rightOperand = node->children[1]->value;
         }
@@ -163,27 +164,20 @@ void generateQuadruples(Node *node)
         // review if is a value stored in a variable or a number
         std::string leftOperand, rightOperand;
 
-        if (node->children[0]->type == "ID")
+        if (node->children[0]->numeric_type == "ID")
         {
             leftOperand = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
-        }
-        else if (node->children[0]->type == "INT" || node->children[0]->type == "FLOAT")
-        {
-            leftOperand = node->children[0]->value;
         }
         else
         {
             leftOperand = node->children[0]->value;
         }
 
-        if (node->children[1]->type == "ID")
+        if (node->children[1]->numeric_type == "ID")
         {
             rightOperand = std::to_string(symbolTable[node->children[1]->value].memoryAllocation);
         }
-        else if (node->children[1]->type == "INT" || node->children[1]->type == "FLOAT")
-        {
-            rightOperand = node->children[1]->value;
-        }
+
         else
         {
             rightOperand = node->children[1]->value;

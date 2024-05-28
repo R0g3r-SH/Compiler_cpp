@@ -1,4 +1,4 @@
-Analizando archivo: tests/intput.txt
+Analizando archivo: tests/input0.txt
 Análisis sintáctico completado con éxito.
-Variable: pickex2 | Type: FLOAT | Scope: 0
-Variable: pickles | Type: FLOAT | Scope: 0
+Variable: current | Type: INT | Scope: 0
+Variable: next | Type: INT | Scope: 0
