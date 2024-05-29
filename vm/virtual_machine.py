@@ -98,6 +98,23 @@ class VirtualMachine:
                     #jump to the label next to the comparison
                 else:
                     self.set_value(arg3, 0)
+
+            elif op == '!=' :
+                try:
+                    arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = int(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                    
+                except ValueError:
+                    arg1 = float(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)
+                    arg2 = float(arg2) if self.memory.get(int(arg2)) is None else self.get_value(arg2)
+                
+                if arg1 != arg2:
+                    #save the value of the comparison in the memory
+                    self.set_value(arg3, 1)
+                    #jump to the label next to the comparison
+                else:
+                    self.set_value(arg3, 0)
+
             elif op == '+':
                 try:
                     arg1 = int(arg1) if self.memory.get(int(arg1)) is None else self.get_value(arg1)

@@ -135,6 +135,14 @@ void generateQuadruples(Node *node)
         std::string op = "=";
         std::string result = std::to_string(symbolTable[node->children[0]->value].memoryAllocation);
         std::string operand = node->children[1]->value; // Value to assign
+
+        // review  if the value to asign is a variable
+        if (symbolTable.find(operand) != symbolTable.end())
+        {
+            // Operand is a variable, get its memory allocation
+            operand = std::to_string(symbolTable[operand].memoryAllocation);
+        }
+
         addQuadruple(op, operand, "", result);
     }
     else if (node->type == "expression" && !node->quadruplesGenerated)

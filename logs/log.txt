@@ -1,4 +1,5 @@
-Analizando archivo: tests/input0.txt
+Analizando archivo: tests/fibo.txt
 Análisis sintáctico completado con éxito.
-Variable: current | Type: INT | Scope: 0
-Variable: current2 | Type: INT | Scope: 0
+Variable: a | Type: INT | Scope: 0
+Variable: b | Type: INT | Scope: 0
+Variable: c | Type: INT | Scope: 0

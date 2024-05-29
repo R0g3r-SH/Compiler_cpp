@@ -1,0 +1,35 @@
+PROGRAM hello;
+
+VAR a, b, c: INT;
+
+a = 10;
+b= 5;S
+
+IF (a>b) {
+    PRINT("A");
+    b = a; 
+    a = b + 10 ;
+} ELSE {
+
+    PRINT("B");
+    b = a; 
+    a = b  + 10;
+}
+
+
+DO{
+    PRINT("---A---");
+    PRINT(a);
+    PRINT("---B---");
+    PRINT(b);
+    a = a - 1;
+    b = b + 1;
+}WHILE(a!=b)
+
+    PRINT("---A---");
+    PRINT(a);
+    PRINT("---B---");
+    PRINT(b);
+
+
+END
