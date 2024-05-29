@@ -1,0 +1,15 @@
+PROGRAM negatives;
+
+MAIN{
+
+    VAR current, current2: INT;
+
+    current = 8 ;
+    current2 = 4 ;
+    current  = current2 * -current;
+
+
+    PRINT(current);
+
+}
+END

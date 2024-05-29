@@ -1,0 +1,17 @@
+PROGRAM fibo;
+
+MAIN{
+
+    VAR current, next: INT;
+
+    current = 1;
+    next = 1;
+
+    DO {
+        PRINT(current);
+        next = current + next;
+        current = next - current;
+    } WHILE (current < 10)
+    
+}
+END

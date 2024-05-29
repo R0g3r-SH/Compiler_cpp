@@ -1,0 +1,18 @@
+PROGRAM dowhile;
+
+MAIN{
+
+    VAR pickles , pickles2 , flag: INT ;
+
+    pickles = 1;
+    pickles2 = 1;
+    flag = 10;
+
+    DO{
+        
+        PRINT(pickles);
+    pickles = pickles + pickles2;
+    }WHILE(pickles<flag)
+
+}
+END
