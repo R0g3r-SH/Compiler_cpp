@@ -7,6 +7,7 @@
 
 [ \t\r\n]+   { /* Skip whitespace and line breaks */ }
 PROGRAM      { printf("Token: PROGRAM\n"); return PROGRAM; }
+MAIN      { return MAIN; }
 ";"          { return SEMI_COLON; }
 VAR          { return VAR; }
 ","          { return COMMA; }

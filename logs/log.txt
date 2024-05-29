@@ -1,4 +1,4 @@
-Analizando archivo: tests/fibo.txt
+Analizando archivo: tests/utilikmate.txt
 Análisis sintáctico completado con éxito.
 Variable: a | Type: INT | Scope: 0
 Variable: b | Type: INT | Scope: 0

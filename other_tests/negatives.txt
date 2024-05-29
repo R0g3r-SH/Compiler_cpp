@@ -1,13 +1,15 @@
-PROGRAM test1;
+PROGRAM negatives;
 
-VAR current, current2: INT;
+MAIN{
 
-current = 8 ;
-current2 = 4 ;
-current  = current2 * -current;
+    VAR current, current2: INT;
+
+    current = 8 ;
+    current2 = 4 ;
+    current  = current2 * -current;
 
 
-PRINT(current);
+    PRINT(current);
 
-
+}
 END

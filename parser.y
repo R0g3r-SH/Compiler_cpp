@@ -30,7 +30,7 @@ Node* rootNode = nullptr;
     Node* node; 
 }
 
-%token PROGRAM ID SEMI_COLON VAR COMMA POINTS INT FLOAT IF ELSE WHILE LEFT_BRACE RIGHT_BRACE LEFT_PAREN RIGHT_PAREN EQUALS GREATER_THAN LESS_THAN NOT_EQUALS PLUS MINUS TIMES DIVIDE CTE_INT CTE_FLOAT CTE_STRING VOID PRINT DO END
+%token PROGRAM ID SEMI_COLON MAIN VAR COMMA POINTS INT FLOAT IF ELSE WHILE LEFT_BRACE RIGHT_BRACE LEFT_PAREN RIGHT_PAREN EQUALS GREATER_THAN LESS_THAN NOT_EQUALS PLUS MINUS TIMES DIVIDE CTE_INT CTE_FLOAT CTE_STRING VOID PRINT DO END
 
 %token <str> ID
 %token <num> CTE_INT
@@ -40,6 +40,7 @@ Node* rootNode = nullptr;
 %token <str> LEFT_BRACE
 %token <str> LEFT_PAREN
 %token <str> RIGHT_PAREN
+%token <str> MAIN
 
 %type <node> program
 %type <node> statements
@@ -60,10 +61,10 @@ Node* rootNode = nullptr;
 
 %%
 
-program : PROGRAM ID SEMI_COLON statements END { 
+program : PROGRAM ID SEMI_COLON MAIN LEFT_BRACE statements RIGHT_BRACE END { 
 
     $$ = new Node("program", "program");
-    $$->children.push_back($4); // Add statements as a child of the program node
+    $$->children.push_back($6); // Add statements as a child of the program node
     rootNode = $$; // Save the root node
     printf("Program parsed !!! \n");
 

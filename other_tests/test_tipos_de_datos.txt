@@ -1,13 +1,15 @@
-PROGRAM
+PROGRAM datatype;
+
+MAIN{
+
+    VAR pickles2 , pickles3: FLOAT ;
+
+    VAR pickles4 : INT ;
 
 
-VAR pickles2 , pickles3: FLOAT ;
+    pickles2 = 20.0; 
 
-VAR pickles4 : INT ;
-
-
-pickles2 = 20.0; 
-
-pickles4 = 3;
+    pickles4 = pickles2;
+}
 
 END

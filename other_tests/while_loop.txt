@@ -1,15 +1,18 @@
-PROGRAM test1;
+PROGRAM dowhile;
 
-VAR pickles , pickles2 , flag: INT ;
+MAIN{
 
-pickles = 1;
-pickles2 = 1;
-flag = 10;
+    VAR pickles , pickles2 , flag: INT ;
 
-DO{
-    
-    PRINT(pickles);
-   pickles = pickles + pickles2;
-}WHILE(pickles<flag)
+    pickles = 1;
+    pickles2 = 1;
+    flag = 10;
 
+    DO{
+        
+        PRINT(pickles);
+    pickles = pickles + pickles2;
+    }WHILE(pickles<flag)
+
+}
 END

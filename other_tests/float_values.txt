@@ -1,9 +1,11 @@
-PROGRAM test1;
+PROGRAM floaats;
 
-VAR pickles,pickex2 : FLOAT ;
+MAIN{
+    VAR pickles,pickex2 : FLOAT ;
 
-pickles = 10.5 + 20 + 8.7;
+    pickles = 10.5 + 20 + 8.7;
 
-PRINT(pickles);
+    PRINT(pickles);
+}
 
 END

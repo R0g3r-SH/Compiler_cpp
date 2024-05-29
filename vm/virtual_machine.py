@@ -16,6 +16,7 @@ class VirtualMachine:
         if arg[0] == 't':
             self.temp_vars[arg] = value
         else:
+            
             self.memory[int(arg)] = value
                 
 
